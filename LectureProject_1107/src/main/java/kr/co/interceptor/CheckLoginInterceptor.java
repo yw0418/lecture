@@ -25,7 +25,7 @@ public class CheckLoginInterceptor implements HandlerInterceptor{
             return false; // 더이상 컨트롤러 요청으로 가지 않도록 false로 반환함
         }
 				
-		return true;
+		return true; 
 	}
 
 	@Override
