@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="userMapper">
+
+   	<select id="idCheck" resultType="kr.co.vo.UserVO">
+		SELECT * FROM USERINFO WHERE ID=#{id}
+	</select>
+	
+	<!-- 전체 유저 불러오기 -->
+	<select id='userList' resultType="kr.co.vo.UserVO">
+		<![CDATA[
+		SELECT U.ID, NAME, MAIL, PHONE, USERSTATUS, S.SUBNM, DELFLAG, REGDTM 
+		FROM USERINFO U
+		INNER JOIN SUBCOMMON S
+		ON U.AUTH = S.SUBID
+		ORDER BY REGDTM DESC
+    	]]>
+	</select>
+	
+	<!-- 회원가입 -->
+	<insert id='joinUser'>
+	    <selectKey keyProperty="userNo" resultType="java.lang.Integer" order="BEFORE">
+        select USER_SEQ.NEXTVAL from dual
+    	</selectKey>
+		<![CDATA[
+		INSERT INTO USERINFO(USERNO, NAME, ID, PASSWORD, MAIL, AUTH, REGDTM) VALUES(#{userNo}, #{name}, #{id}, #{password}, #{mail}, #{auth}, sysdate)
+    	]]>
+	</insert>
+	
+	<!-- 로그인 -->
+	<select id='login' resultType="kr.co.vo.UserVO">
+		<![CDATA[
+		SELECT ID, PASSWORD FROM USERINFO WHERE ID=#{id} and password=#{password}
+    	]]>
+	</select>
+	
+	
+</mapper>

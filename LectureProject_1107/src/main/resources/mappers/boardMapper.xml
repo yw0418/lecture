@@ -13,4 +13,44 @@
 		  FROM MP_BOARD
 	</select>
 	
+	<!-- 위에는 테스트 아래부터 -->
+	
+	<!-- 수강신청 목록 불러오기 -->
+	<select id='lectureList' resultType="kr.co.vo.LectureVO">
+		<![CDATA[
+		SELECT a.LECTURENO, a.TITLE, a.CONTENT, a.TEACHERNO, a.NOWPEOPLE, a.MAXPEOPLE, b.NAME
+  		FROM LECTURE a INNER JOIN USERINFO b ON b.USERNO = a.TEACHERNO ORDER BY LECTURENO DESC
+    	]]>
+	</select>
+	
+	<!-- 글 하나 불러오기 -->
+	<select id='contentList' parameterType="java.lang.Integer" resultType="kr.co.vo.LectureVO">
+		<![CDATA[
+		SELECT a.LECTURENO, a.TITLE, a.LECTUREDATE, a.CONTENT, a.TEACHERNO, a.NOWPEOPLE, a.MAXPEOPLE, b.NAME
+  		FROM LECTURE a INNER JOIN USERINFO b ON b.USERNO = a.TEACHERNO WHERE LECTURENO = #{lectureNo}
+    	]]>
+	</select>
+	
+	<!-- 수강신청 -->
+	<insert id='signList'>
+	    <selectKey keyProperty="signNo" resultType="java.lang.Integer" order="BEFORE">
+        SELECT SIGN_SEQ.NEXTVAL from dual
+    	</selectKey>
+		<![CDATA[
+		INSERT INTO SIGN(SIGNNO, SIGNUSERNO, SIGNLECTURENO, SIGNDATE) VALUES(#{signNo}, #{name}, #{id}, #{password}, #{mail}, #{auth}, sysdate)
+    	]]>
+	</insert>
+	
+	<!-- (교사)강의목록 -->
+	<select id='teacherList' parameterType="java.lang.String" resultType="kr.co.vo.LectureVO">
+		<![CDATA[
+		SELECT l.lECTURENO, l.TITLE, l.LECTUREDATE, l.MAXPEOPLE, l.NOWPEOPLE, u.NAME
+		FROM LECTURE l
+		INNER JOIN USERINFO u 
+		ON U.USERNO = l.TEACHERNO
+		WHERE U.ID = #{id}
+		ORDER BY l.LECTUREDATE DESC
+    	]]>
+	</select>
+	
 </mapper>
