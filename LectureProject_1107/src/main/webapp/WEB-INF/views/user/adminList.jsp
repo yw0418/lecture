@@ -99,37 +99,29 @@
           <th text align='center'>권한</th>
           <th text align='center'>이름</th>
           <th text align='center'>가입일</th>
-          <th text align='center'>삭제여부</th>
         </tr>
       </thead>
       <tbody class="text-center">
         
         <c:forEach var="list" items="${userList}">
         <tr>
-          <td>${list.auth}</td>
+          <td>${list.SUBNM}</td>
           <td class="text-left" width="50%">
             <div class="panel-faq-container">
-              <p class="panel-faq-title">${list.name}</p>
+              <p class="panel-faq-title">${list.NAME}</p>
               <div class="panel-faq-answer">
-                <p>${list.phone}</p>
+                <p>아이디 : ${list.ID}</p>
+                <p>메일 : ${list.MAIL}</p>
               </div>
             </div>
           </td>
-          <td><fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${list.regDtm}"/></td>
-          <td>${list.delFlag}</td>
+          <td>${list.REGDTM}</td>
         </tr>
         </c:forEach>
-        
-        <c:forEach var="first" items="${firstList}" varStatus="status">
-	<c:forEach var="sec" items="${secondList[status.index]}" >
-    </c:forEach>
-</c:forEach>  
-        
-        
-        <tr class="bg-info">
+               
+<!--         <tr class="bg-info">
           <td colspan=4 class="text-left">자주 묻는 질문 총 합계</td>
-          <td>429</td>
-        </tr>
+        </tr> -->
       </tbody>
     </table>
   </div>

@@ -17,7 +17,7 @@ public class CheckLoginInterceptor implements HandlerInterceptor{
 		
 		HttpSession session = request.getSession();
 		
-		Object obj = session.getAttribute("id");
+		Object obj = session.getAttribute("member");
 		
         if ( obj == null ){
             // 로그인이 안되어 있는 상태임으로 로그인 폼으로 다시 돌려보냄(redirect)

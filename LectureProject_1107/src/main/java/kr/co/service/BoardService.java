@@ -1,20 +1,13 @@
 package kr.co.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import kr.co.vo.BoardVO;
 import kr.co.vo.LectureVO;
+import kr.co.vo.SignVO;
 
 public interface BoardService {
-
-	// 게시글 작성
-	public void write(BoardVO boardVO) throws Exception;
-	
-	// 게시물 목록 조회
-	public List<BoardVO> list() throws Exception;
-	
-	
-	// 아래부터
 	
 	// 수강신청 목록 조회
 	public List<LectureVO> lectureList() throws Exception;
@@ -24,4 +17,16 @@ public interface BoardService {
 	
 	// (교사)강의목록 조회
 	public List<LectureVO> teacherList(String id) throws Exception;
+	
+	// 단일 수강신청
+	public void signList(HashMap<String, Object> param) throws Exception;
+	
+	//신청인원 증가
+	public void nowPeopleAdd(int now) throws Exception;
+	
+	// (학생) 수강신청 목록
+	public List<HashMap<String, Object>> addList(int id) throws Exception;
+	
+	// 아이디 번호로 바꾸기
+	public int changeId(String id) throws Exception;
 }

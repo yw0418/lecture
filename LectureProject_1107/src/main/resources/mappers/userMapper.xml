@@ -9,7 +9,7 @@
 	</select>
 	
 	<!-- 전체 유저 불러오기 -->
-	<select id='userList' resultType="kr.co.vo.UserVO">
+	<select id='userList' resultType="HashMap">
 		<![CDATA[
 		SELECT U.ID, NAME, MAIL, PHONE, USERSTATUS, S.SUBNM, DELFLAG, REGDTM 
 		FROM USERINFO U
@@ -25,16 +25,36 @@
         select USER_SEQ.NEXTVAL from dual
     	</selectKey>
 		<![CDATA[
-		INSERT INTO USERINFO(USERNO, NAME, ID, PASSWORD, MAIL, AUTH, REGDTM) VALUES(#{userNo}, #{name}, #{id}, #{password}, #{mail}, #{auth}, sysdate)
+		INSERT INTO USERINFO(USERNO, NAME, ID, PASSWORD, MAIL, AUTH, REGDTM, PHONE) VALUES(#{userNo}, #{name}, #{id}, #{password}, #{mail}, #{auth}, sysdate, #{phone})
     	]]>
 	</insert>
 	
 	<!-- 로그인 -->
 	<select id='login' resultType="kr.co.vo.UserVO">
 		<![CDATA[
-		SELECT ID, PASSWORD FROM USERINFO WHERE ID=#{id} and password=#{password}
+		SELECT ID, PASSWORD, AUTH FROM USERINFO WHERE ID=#{id}
     	]]>
 	</select>
 	
+	<!-- 한명의 회원 불러오기 -->
+	<select id='oneInfo' resultType="kr.co.vo.UserVO">
+		<![CDATA[
+		SELECT * FROM USERINFO WHERE ID=#{id}
+    	]]>
+	</select>
+	
+	<!-- 회원정보 수정 -->
+	<update id='updateUser'>
+		<![CDATA[
+		UPDATE USERINFO SET PHONE=#{phone}, NAME=#{name}, MAIL=#{mail} WHERE ID = #{id}
+    	]]>
+	</update>
+	
+	<!-- 권한 찾기 -->
+	<select id='oneAuth' resultType="java.lang.String">
+		<![CDATA[
+		SELECT AUTH FROM USERINFO WHERE ID = #{id}
+    	]]>
+	</select>
 	
 </mapper>

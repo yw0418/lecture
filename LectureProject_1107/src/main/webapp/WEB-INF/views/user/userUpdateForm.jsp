@@ -12,88 +12,91 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   <script type="text/javascript">
-    $(document).ready(function(){
-    	if(${!empty msgType}){
-     		$("#messageType").attr("class", "modal-content panel-warning");    
-    		$("#myMessage").modal("show");
-    	}
-    });
+  var code = "";      //이메일전송 인증번호 저장위한 코드
+  
+  function authCheck(){
+  	   var inputCode = $("#mailcheck").val();        // 입력코드    
+  	    var checkResult = $("#mailMessage");    // 비교 결과     
+  	    
+  	    if(inputCode != code){                          
+  	        checkResult.html("인증번호가 일치하지않습니다.");
+  	    }
+  	    else{
+  	    	checkResult.html("");
+      	}   
+   }
  
-    function passwordCheck(){
-    	var memPassword1=$("#memPassword1").val();
-    	var memPassword2=$("#memPassword2").val();
-    	if(memPassword1 != memPassword2){
-    		$("#passMessage").html("비밀번호가 서로 일치하지 않습니다.");
-    	}else{
-    		$("#passMessage").html("");
-    		$("#memPassword").val(memPassword1);
-    	}   	
-    }
-    function goUpdate(){
-    	var memAge=$("#memAge").val();
-    	if(memAge==null || memAge=="" || memAge==0){
-    		alert("나이를 입력하세요");
-    		return false;
-    	}
-    	document.frm.submit(); // 전송
-    }
+  /* 인증번호 이메일 전송 */
+	function mailCheck(){
+		var email = $("#mail").val();		
+		var checkBox = $("#checkBox");
+		
+		alert("메일이 전송되었습니다.");
+	    $.ajax({
+          type:"GET",
+	        url:"${contextPath}/user/mailCheck?email=" + email,
+	        success:function(data){
+	            //console.log("data : " + data);
+	            code = data;
+	           }
+	    });
+  }
+   
+  function goInsert(){
+  	var name=$("#name").val();
+  	var phone=$("#phone").val();
+  	var mail=$("#mail").val();
+  	var mailcheck=$("#mailcheck").val();
+  	
+  	if(name=="" || phone=="" || mail=="" || mailcheck ==""){
+  		alert("모두 입력해주세요.");
+  		return false;
+  	}else if(mailcheck != code){
+  		alert("인증번호가 일치하지 않습니다.");
+  		return false;
+  	}
+  	
+  	document.frm.submit(); // 전송
+  }
   </script>
 </head>
 <body>
 <div class="container">
   <jsp:include page="../common/header.jsp"/> 
-  <h2>Spring MVC03</h2>
+  <h2>회원정보 수정</h2>
   <div class="panel panel-default">
-    <div class="panel-heading">회원정보수정 양식</div>
+    <div class="panel-heading">회원정보수정</div>
     <div class="panel-body">
-      <form name="frm" action="${contextPath}/memUpdate.do" method="post">
-         <input type="hidden" id="memID" name="memID" value="${mvo.memID}"/>
-         <input type="hidden" id="memPassword" name="memPassword" value=""/>
-         <table class="table table-bordered" style="text-align: center; border: 1px solid #dddddd;">
+      <form name="frm" action="${contextPath}/user/userUpdate" method="post">
+        <table class="table table-bordered" style="text-align: center; border: 1px solid #dddddd;">
            <tr>
              <td style="width: 110px; vertical-align: middle;">아이디</td>
-             <td>${mvo.memID}</td>
+             <td><input type="hidden" id="id" name="id" value="${list.id}"/>${list.id}</td>
            </tr>
            <tr>
-             <td style="width: 110px; vertical-align: middle;">비밀번호</td>
-             <td colspan="2"><input id="memPassword1" name="memPassword1" onkeyup="passwordCheck()" class="form-control" type="password" maxlength="20" placeholder="비밀번호를 입력하세요."/></td>            
+             <td style="width: 110px; vertical-align: middle;">이름</td>
+             <td colspan="2"><input id="name" name="name" class="form-control" type="text" maxlength="20" value="${list.name}" placeholder="이름을 입력하세요."/></td>            
            </tr>
            <tr>
-             <td style="width: 110px; vertical-align: middle;">비밀번호확인</td>
-             <td colspan="2"><input id="memPassword2" name="memPassword2" onkeyup="passwordCheck()" class="form-control" type="password" maxlength="20" placeholder="비밀번호를 확인하세요."/></td>            
+             <td style="width: 110px; vertical-align: middle;">전화번호</td>
+             <td colspan="2"><input id="phone" name="phone" class="form-control" type="text" maxlength="11" placeholder="전화번호를 입력하세요." value="${list.phone }"/></td>            
            </tr>
-            <tr>
-             <td style="width: 110px; vertical-align: middle;">사용자 이름</td>
-             <td colspan="2"><input id="memName" name="memName" class="form-control" type="text" maxlength="20" placeholder="이름을 입력하세요." value="${mvo.memName}"/></td>            
-           </tr>
-           <tr>
-             <td style="width: 110px; vertical-align: middle;">나이</td>
-             <td colspan="2"><input id="memAge" name="memAge" class="form-control" type="number" maxlength="20" placeholder="나이를 입력하세요." value="${mvo.memAge}"/></td>            
-           </tr>
-           <tr>
-             <td style="width: 110px; vertical-align: middle;">성별</td>
-             <td colspan="2">
-                <div class="form-group" style="text-align: center; margin: 0 auto;">
-                    <div class="btn-group" data-toggle="buttons">
-                       <label class="btn btn-primary <c:if test="${mvo.memGender eq '남자'}"> active</c:if>">
-                         <input type="radio"  name="memGender" autocomplete="off" value="남자" 
-                           <c:if test="${mvo.memGender eq '남자'}"> checked</c:if> />남자
-                       </label>
-                        <label class="btn btn-primary <c:if test="${mvo.memGender eq '여자'}"> active</c:if>">
-                         <input type="radio"  name="memGender" autocomplete="off" value="여자"
-                           <c:if test="${mvo.memGender eq '여자'}"> checked</c:if> />여자
-                       </label>
-                    </div>                    
-                </div>
-             </td>            
-           </tr> 
            <tr>
              <td style="width: 110px; vertical-align: middle;">이메일</td>
-             <td colspan="2"><input id="memEmail" name="memEmail" class="form-control" type="text" maxlength="20" placeholder="이메일을 입력하세요." value="${mvo.memEmail}"/></td>            
+             <td><input id="mail" name="mail" class="form-control" type="text" maxlength="40" placeholder="이메일을 입력하세요." value="${list.mail }"/></td>   
+             <td style="width: 110px;"><button type="button" class="btn btn-primary btn-sm" onclick="mailCheck()">인증요청</button></td>    
+           </tr>
+            <tr>
+             <td style="width: 110px; vertical-align: middle;">인증번호</td>
+              <td colspan="2"><input id="mailcheck" class="form-control" onkeyup="authCheck()" type="text" maxlength="11" placeholder="인증번호를 입력하세요."/></td>           
            </tr>
            <tr>
-             <td colspan="3" style="text-align: left;">
-                <span id="passMessage" style="color: red"></span><input type="button" class="btn btn-primary btn-sm pull-right" value="수정" onclick="goUpdate()"/>
+           <td></td>
+           <td colspan="2"><span id="mailMessage" style="color: red"></span></td>
+           </tr>
+            <tr>
+             <td colspan="3" style="text-align: center;">
+                <input type="button" class="btn btn-primary pull-center" value="수정" onclick="goInsert()"/>
              </td>             
            </tr>
          </table>

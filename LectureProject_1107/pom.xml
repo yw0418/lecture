@@ -194,21 +194,22 @@
         
         <!-- 유효성검사 추가 -->
         		<!-- https://mvnrepository.com/artifact/javax.validation/validation-api -->
+		<!-- hibernate-validator 5~6 버전대랑 javax.validation 1.x.x는 호환이 안된다. -->
 		<dependency>
-			<groupId>javax.validation</groupId>
-			<artifactId>validation-api</artifactId>
-			<version>2.0.1.Final</version>
+		       <groupId>org.hibernate.validator</groupId>
+		    <artifactId>hibernate-validator</artifactId>
+		    <version>6.0.10.Final</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator -->
+		<!-- https://mvnrepository.com/artifact/javax.validation/validation-api -->
 		<dependency>
-			<groupId>org.hibernate.validator</groupId>
-			<artifactId>hibernate-validator</artifactId>
-			<version>6.2.0.Final</version>
+		    <groupId>javax.validation</groupId>
+		    <artifactId>validation-api</artifactId>
+		    <version>2.0.1.Final</version>
 		</dependency>
 		
 
-				<!--  
-				<dependency>
+				  
+		<dependency>
 		    <groupId>com.fasterxml.jackson.core</groupId>
 		    <artifactId>jackson-databind</artifactId>
 		    <version>2.9.4</version>
@@ -227,7 +228,43 @@
 		    <artifactId>gson</artifactId>
 		    <version>2.8.2</version>
 		</dependency>
-		-->
+		
+	    <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-core -->
+	<dependency>
+	    <groupId>org.springframework.security</groupId>
+	    <artifactId>spring-security-core</artifactId>
+	    <version>5.0.8.RELEASE</version>
+	</dependency>
+	
+			
+	<!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-web -->
+	<dependency>
+	    <groupId>org.springframework.security</groupId>
+	    <artifactId>spring-security-web</artifactId>
+	    <version>5.0.8.RELEASE</version>
+	</dependency>
+	
+	<!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-config -->
+	<dependency>
+	    <groupId>org.springframework.security</groupId>
+	    <artifactId>spring-security-config</artifactId>
+	    <version>5.0.8.RELEASE</version>
+	</dependency>
+	
+	 	<!-- mail 인증을  위한 설정-->
+        <!-- https://mvnrepository.com/artifact/javax.mail/mail -->
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>1.4.7</version>
+        </dependency>        
+        
+        <!-- https://mvnrepository.com/artifact/org.springframework/spring-context-support -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+            <version>${org.springframework-version}</version>
+        </dependency>
 
 
 		

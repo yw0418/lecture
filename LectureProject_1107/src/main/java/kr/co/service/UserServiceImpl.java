@@ -1,5 +1,6 @@
 package kr.co.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -22,7 +23,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public List<UserVO> userList() throws Exception {
+	public List<HashMap<String, Object>> userList() throws Exception {
 		// TODO Auto-generated method stub
 		return dao.userList();
 	}
@@ -37,5 +38,23 @@ public class UserServiceImpl implements UserService {
 	public UserVO login(UserVO vo) throws Exception {
 		// TODO Auto-generated method stub
 		return dao.login(vo);
+	}
+
+	@Override
+	public UserVO oneInfo(String id) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.oneInfo(id);
+	}
+
+	@Override
+	public void updateUser(UserVO vo) throws Exception {
+		dao.updateUser(vo);
+		
+	}
+
+	@Override
+	public String oneAuth(String id) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.oneAuth(id);
 	}
 }

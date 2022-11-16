@@ -21,9 +21,9 @@
 <div class="container">
 <jsp:include page="common/header.jsp"/>      
   <div class="panel panel-default">
-  	    	<c:if test="${id != null }">
+  	    	<c:if test="${member != null}">
 			<div>
-				<p>${id}님 환영 합니다.</p>
+				<p>${member.id}님 환영 합니다.</p>
 			</div>
 			</c:if>
 			<c:if test="${msg == false}">
@@ -35,26 +35,14 @@
     <div class="panel-body">
 		<ul class="nav nav-tabs">
 		  <li class="active"><a data-toggle="tab" href="#home">Home</a></li>
-		  <!--  
-		  <li><a data-toggle="tab" href="#menu1">게시판</a></li>
-		  <li><a data-toggle="tab" href="#menu2">공지사항</a></li>
-		  -->
+
 		</ul>		
 		<div class="tab-content">
 		  <div id="home" class="tab-pane fade in active">
 		    <h3>HOME</h3>
 		    <p>학사관리 프로그램입니다.</p>
 		  </div>
-		  <!-- 
-		  <div id="menu1" class="tab-pane fade">
-		    <h3>게시판</h3>
-		    <p>Some content in menu 1.</p>
-		  </div>
-		  <div id="menu2" class="tab-pane fade">
-		    <h3>공지사항</h3>
-		    <p>Some content in menu 2.</p>
-		  </div>
-		   -->
+
 		</div>		
     </div>
     <div class="panel-footer">유예원 / https://github.com/yw0418/lecture</div>

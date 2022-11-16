@@ -3,18 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="boardMapper">
-      <insert id="insert">
-	INSERT INTO MP_BOARD(TITLE,CONTENT) VALUES(#{title}, #{content})
-      </insert>
-      
-      	<select id="list" resultType="kr.co.vo.BoardVO">
-		SELECT   TITLE
-			   , CONTENT
-		  FROM MP_BOARD
-	</select>
-	
-	<!-- 위에는 테스트 아래부터 -->
-	
+
 	<!-- 수강신청 목록 불러오기 -->
 	<select id='lectureList' resultType="kr.co.vo.LectureVO">
 		<![CDATA[
@@ -32,12 +21,12 @@
 	</select>
 	
 	<!-- 수강신청 -->
-	<insert id='signList'>
+	<insert id='signList' parameterType="java.util.HashMap">
 	    <selectKey keyProperty="signNo" resultType="java.lang.Integer" order="BEFORE">
         SELECT SIGN_SEQ.NEXTVAL from dual
     	</selectKey>
 		<![CDATA[
-		INSERT INTO SIGN(SIGNNO, SIGNUSERNO, SIGNLECTURENO, SIGNDATE) VALUES(#{signNo}, #{name}, #{id}, #{password}, #{mail}, #{auth}, sysdate)
+		INSERT INTO SIGN(SIGNNO, SIGNUSERNO, SIGNLECTURENO, SIGNDATE) VALUES(#{signNo}, #{signUserNo}, #{signLectureNo}, sysdate)
     	]]>
 	</insert>
 	
@@ -53,4 +42,32 @@
     	]]>
 	</select>
 	
+	<!--신청인원 증가 -->
+	<update id="nowPeopleAdd">
+		UPDATE LECTURE set NOWPEOPLE = NOWPEOPLE + 1 where LECTURENO=#{lectureNo}
+	</update>
+	
+	<!-- (학생) 수강신청 목록 불러오기 -->
+	<select id='addList' resultType="HashMap">
+		<![CDATA[
+  		SELECT a.title, a.lecturedate, a.nowpeople, a.maxpeople, b.signdate, a.CONTENT, c.NAME
+  		FROM LECTURE a 
+  		INNER JOIN SIGN b 
+  		ON b.signlectureno = a.LECTURENO 
+  		INNER JOIN USERINFO c 
+  		ON a.teacherno = c.USERNO
+  		where signuserno=#{signuserno}
+    	]]>
+	</select>
+	
+	<!-- 아이디 번호로 바꾸기 -->
+	<select id='changeId' parameterType="java.lang.String" resultType="java.lang.Integer">
+		<![CDATA[
+	  	SELECT s.SIGNUSERNO
+	  	FROM USERINFO u
+	  	INNER JOIN SIGN s
+	  	ON u.USERNO = s.SIGNUSERNO
+	  	WHERE ID = #{id} GROUP BY s.SIGNUSERNO
+    	]]>
+	</select>
 </mapper>
