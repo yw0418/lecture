@@ -14,21 +14,27 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   <script type="text/javascript">
-  	$(function (){
-	    $("#create").on("click",function(){
-	        //alert('hi');
-			$.ajax({
-	        	url : "${contextPath}/board/addForm",
-	     	    type : "POST",
-	    	    dataType : "json",
-	    	    data: $('#frm').serialize(),
-	            success: function(data){
-	                location.href="board/appLecture";
-	            },
-	            error: function(){  alert("신규등록 error");
-	        });
-	    });
-	}); 
+   $(document).ready(function() {
+	  $("#create").on("click", function(){
+	  
+		  var te = $("input[name='signLectureNo']").val();
+		  alert(te);
+		  
+		 $.ajax({
+			data: {"signLectureNo" : $("input[name='signLectureNo']").val()},
+			url: "${contextPath}/board/test",
+			type: "POST",
+			dataType: "json",
+			success: function(data){
+				alert("수강신청이 완료되었습니다.");
+				window.location = '${contextPath}/board/myStudy';
+			},
+			error: function(){
+				alert("error");
+			}
+		 });
+	  });
+  }); 
   </script>
 </head>
 <body>
@@ -40,7 +46,7 @@
     <div class="panel-heading">강의 상세보기</div>
     <div class="panel-body">
        <form id="frm" method="post">
-       <table class="table table-bordered" style="text-align: center; border: 1px solid #dddddd;"">
+       <table class="table table-bordered" style="text-align: center; border: 1px solid #dddddd;">
             <tr>
              <td style="width: 110px; vertical-align: middle;">제목</td>
              <td>${list.title}</td>
@@ -62,7 +68,7 @@
              <td><fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${list.lectureDate}"/></td>
             </tr>
            <tr>
-			<td style="width: 110px; vertical-align: middle;">내용</td>
+			<td style="width: 110px; vertical-align: middle;">내용 <input type="hidden" name="signLectureNo" value="${list.lectureNo }"></td>
            </tr>
        </table> 
        </form>  

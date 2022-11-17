@@ -29,4 +29,7 @@ public interface BoardService {
 	
 	// 아이디 번호로 바꾸기
 	public int changeId(String id) throws Exception;
+	
+	// 기존 수강신청 목록에 있는지 조회
+	public int isSign(HashMap<String, Object> signMap) throws Exception;
 }

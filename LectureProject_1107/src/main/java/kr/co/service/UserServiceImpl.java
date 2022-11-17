@@ -57,4 +57,10 @@ public class UserServiceImpl implements UserService {
 		// TODO Auto-generated method stub
 		return dao.oneAuth(id);
 	}
+
+	@Override
+	public int oneNo(String id) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.oneNo(id);
+	}
 }

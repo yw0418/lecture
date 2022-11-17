@@ -25,12 +25,12 @@
        		<li><a href="${contextPath}/board/addStudy">강의등록</a></li>
        		<li><a href="${contextPath}/board/teacherList">내 등록강의</a></li>
         </c:if>
-        <c:if test='${auth eq "admin" || auth eq null }'>  
+        <c:if test='${auth eq "admin"}'>  
          	<li><a href="${contextPath}/board/appLecture">수강신청</a></li>
       		<li><a href="${contextPath}/user/adminList">학생/교사정보</a></li>         
        		<li><a href="${contextPath}/board/reqList">가입요청</a></li> 
       	</c:if>
-      	        <c:if test='${auth eq null }'>  
+      	 <c:if test='${auth eq null }'>  
          	<li><a href="${contextPath}/board/appLecture">수강신청</a></li>
       		<li><a href="${contextPath}/board/myStudy">나의 수강목록</a></li>
       		<li><a href="${contextPath}/board/addStudy">강의등록</a></li>

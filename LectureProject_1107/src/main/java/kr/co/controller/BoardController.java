@@ -42,10 +42,8 @@ public class BoardController {
 		String id = (String)session.getAttribute("id");
 		
 		model.addAttribute("loginId", userService.oneInfo(id));
-		System.out.println(service.lectureList());
 		model.addAttribute("lectList", service.lectureList());
 		
-		log.debug("yw0418={}", service.lectureList());
 		return "/board/appLecture";
 	}
 	
@@ -69,29 +67,43 @@ public class BoardController {
 	
 	// 수강신청하기
 	@RequestMapping(value = "/board/appLecture", method = RequestMethod.POST)
-	public @ResponseBody HashMap<String, Object> signList(HttpServletRequest request) throws Exception{
+	public @ResponseBody HashMap<String, Object> signList(Integer signUserNo,  @RequestParam(value="arr[]") List<Integer> arr) throws Exception{
 		
 		HashMap<String, Object> returnMap = new HashMap<String, Object>();
 		HashMap<String, Object> param = new HashMap<String, Object>();
 		
-		System.out.println("=============================");
-		System.out.println("reqMap : " + request.getParameter("signUserNo"));
-		System.out.println("reqMap : " + request.getParameter("signUserNo"));
-		//System.out.println("reqMap : " + Arrays.asList(request.getParameterValues("arr")));
-		System.out.println("=============================");
-		
-		param.put("signUserNo", request.getParameter("signUserNo"));
-		List<String> arr = Arrays.asList(request.getParameter("arr"));
-		
-				
-		
+		param.put("signUserNo", signUserNo);
+
 		for(int i = 0; i < arr.size(); i++) {
-			 param.put("signLectureNo", arr.get(i));
-			 System.out.println(arr.get(i)); service.signList(param); }
-		 
+			param.put("signLectureNo", arr.get(i));
+			service.signList(param);
+			
+			int signNo = (Integer)param.get("signLectureNo");
+			service.nowPeopleAdd(signNo);
+			}
 		
-				service.signList(param);
-		//service.nowPeopleAdd(vo.getSignLectureNo());
+		return returnMap;
+	}
+	
+	
+	// 단일 수강신청하기
+	@RequestMapping(value = "/board/appLectureOne", method = RequestMethod.POST)
+	public @ResponseBody HashMap<String, Object> appLectureOne(@RequestParam Integer signLectureNo, HttpSession session) throws Exception {
+		HashMap<String, Object> returnMap = new HashMap<String, Object>();
+		HashMap<String, Object> param = new HashMap<String, Object>();
+		
+		System.out.println("=======테스트===========");
+		param.put("signLectureNo", signLectureNo);
+		
+		String id = (String)session.getAttribute("id");
+		int signUserNo = userService.oneNo(id);
+		
+		param.put("signUserNo", signUserNo);
+		
+		service.signList(param);
+		
+		int signNo = (Integer)param.get("signLectureNo");
+		service.nowPeopleAdd(signNo);
 		
 		return returnMap;
 	}

@@ -116,7 +116,7 @@
             </div>
           </td>
           <td>${list.NOWPEOPLE}/${list.MAXPEOPLE }</td>
-          <td>${list.SIGNDATE}</td>
+          <td><fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${list.lectureDate}"/>${list.SIGNDATE}</td>
         </tr>
         </c:forEach>
                

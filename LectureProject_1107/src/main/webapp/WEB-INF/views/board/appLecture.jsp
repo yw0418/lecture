@@ -28,20 +28,6 @@
 			else $("#cbx_chkAll").prop("checked", true); 
 		});
 		
-		  /* $("input[type='button']").click(function() {
-			    // 체크한 항목을 담을 배열 선언
-			    var arr = [];
-			    // 체크한 항목만 취득
-			    var color = $("input[name='chk']:checked");
-			    $(color).each(function() {
-			    	arr.push($(this).val());
-			    });
-
-				$("input[name='arrLectureNo']").val(arr);
-				
-			    document.frm.submit();
-		  }); */
-		  
 		  $("#addLecture").on("click", function(e){
 			 e.preventDefault();
 		    var arr = [];
@@ -50,7 +36,6 @@
 		    	arr.push($(this).val());
 		    });
 		    
-		    alert(arr);
 			 
 			 $.ajax({
 				data: {
@@ -61,7 +46,9 @@
 				type: "POST",
 				dataType: "json",
 				success: function(data){
-					alert("success : " + data.a);
+					
+					alert("수강신청이 완료되었습니다.");
+					window.location = '${contextPath}/board/myStudy';
 				},
 				error: function(){
 					alert("error");
@@ -71,8 +58,6 @@
 	});
 		
 
-
-	//document.frm.submit(); // 전송
   </script>
 </head>
 <body>
@@ -91,7 +76,6 @@
             <td text align='center'>작성자</td>
             <td text align='center'>현재인원</td>
             <td text align='center'>모집인원</td>
-            <td text align='center'>신청</td>
           </tr>
 		  <c:forEach var="list" items="${lectList}">
            <tr>
@@ -105,14 +89,13 @@
 			<td>${list.name}</td>
             <td>${list.nowPeople}</td>
             <td>${list.maxPeople}</td>
-            <td text align='center'><input id="passMessage" type="button" class="btn btn-primary btn-sm" value="신청"/></td>
            </tr>
           </c:forEach>
        </table>    
        <input id="addLecture" type="button" class="btn btn-primary btn pull-center" value="수강신청하기"/>
       </form>
     </div>
-    <div class="panel-footer">footer</div>
+    <div class="panel-footer"></div>
   </div>
 </div>
 

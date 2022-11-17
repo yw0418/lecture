@@ -61,5 +61,11 @@ public class BoardServiceImpl implements BoardService{
 		return dao.changeId(id);
 	}
 
+	@Override
+	public int isSign(HashMap<String, Object> signMap) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.isSign(signMap);
+	}
+
 
 }

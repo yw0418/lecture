@@ -64,6 +64,14 @@ public class BoardDAOImpl implements BoardDAO{
 	}
 
 
+	@Override
+	public int isSign(HashMap<String, Object> signMap) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("boardMapper.isSign", signMap);
+	}
+
+
+
 
 
 	

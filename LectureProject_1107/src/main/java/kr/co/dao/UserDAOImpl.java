@@ -65,6 +65,13 @@ public class UserDAOImpl implements UserDAO{
 		return sqlSession.selectOne("userMapper.oneAuth", id);
 	}
 
+
+	@Override
+	public int oneNo(String id) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("userMapper.oneNo", id);
+	}
+
 	
 	
 }

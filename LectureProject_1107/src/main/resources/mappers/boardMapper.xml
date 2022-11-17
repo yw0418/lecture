@@ -56,7 +56,7 @@
   		ON b.signlectureno = a.LECTURENO 
   		INNER JOIN USERINFO c 
   		ON a.teacherno = c.USERNO
-  		where signuserno=#{signuserno}
+  		where signuserno=#{signuserno} ORDER BY b.SIGNDATE DESC
     	]]>
 	</select>
 	
@@ -68,6 +68,13 @@
 	  	INNER JOIN SIGN s
 	  	ON u.USERNO = s.SIGNUSERNO
 	  	WHERE ID = #{id} GROUP BY s.SIGNUSERNO
+    	]]>
+	</select>
+	
+	<!-- 기존 수강신청한 목록인지 조회 -->
+	<select id='isSign' resultType="java.lang.Integer" parameterType="Map">
+		<![CDATA[
+		SELECT SIGNNO FROM SIGN WHERE SIGNUSERNO = #{signuserno} AND SIGNLECTURENO = #{signlectureno}
     	]]>
 	</select>
 </mapper>

@@ -27,5 +27,8 @@ public interface UserService {
 	
 	//권한찾기
 	public String oneAuth(String id) throws Exception;
+	
+	//유저번호 찾기
+	public int oneNo(String id) throws Exception;
 }
 

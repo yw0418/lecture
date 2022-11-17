@@ -52,8 +52,7 @@
 	<!-- Interceptor 들을 Bean으로 등록한다. -->
 	<beans:bean class='kr.co.interceptor.CheckLoginInterceptor' id='login'/>
 	
-	<interceptors>
-		<!-- 로그인 인터셉터에 쓰기 -->
+ 	<interceptors>
 		<interceptor>
 			<mapping path="/board/*"/>
 			<mapping path="/user/adminList"/>
@@ -63,6 +62,6 @@
 			<beans:ref bean="login"/>
 		</interceptor>
 	</interceptors>
-	
+
 
 </beans:beans>

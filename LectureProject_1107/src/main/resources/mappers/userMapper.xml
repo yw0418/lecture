@@ -57,4 +57,11 @@
     	]]>
 	</select>
 	
+		<!-- 권한 찾기 -->
+	<select id='oneNo' resultType="java.lang.Integer">
+		<![CDATA[
+		SELECT USERNO FROM USERINFO WHERE ID = #{id}
+    	]]>
+	</select>
+	
 </mapper>

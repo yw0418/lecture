@@ -2,6 +2,7 @@ package kr.co.dao;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import kr.co.vo.BoardVO;
 import kr.co.vo.LectureVO;
@@ -30,5 +31,8 @@ public interface BoardDAO {
 	
 	// 아이디 번호로 바꾸기
 	public int changeId(String id) throws Exception;
+	
+	// 기존 수강신청 목록에 있는지 조회
+	public int isSign(HashMap<String, Object> signMap) throws Exception;
 	
 }
