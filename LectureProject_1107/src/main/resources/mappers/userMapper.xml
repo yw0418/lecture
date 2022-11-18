@@ -32,7 +32,7 @@
 	<!-- 로그인 -->
 	<select id='login' resultType="kr.co.vo.UserVO">
 		<![CDATA[
-		SELECT ID, PASSWORD, AUTH FROM USERINFO WHERE ID=#{id}
+		SELECT ID, PASSWORD, AUTH, NAME FROM USERINFO WHERE ID=#{id}
     	]]>
 	</select>
 	

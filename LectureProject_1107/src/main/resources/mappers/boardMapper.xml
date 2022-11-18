@@ -77,4 +77,26 @@
 		SELECT SIGNNO FROM SIGN WHERE SIGNUSERNO = #{signuserno} AND SIGNLECTURENO = #{signlectureno}
     	]]>
 	</select>
+	
+	<!-- lecture페이징처리 카운트 -->
+	<select id='lectureCount' resultType="java.lang.Integer">
+		<![CDATA[
+		SELECT COUNT(*) FROM LECTURE
+    	]]>
+	</select>
+	
+	<!-- 페이징 처리 후 게시글 조회 -->
+	<select id="selectLecture" resultType="kr.co.vo.LectureVO">
+ 		SELECT * FROM LECTURE WHERE LECTURENO BETWEEN #{start} AND #{end} ORDER BY LECTURENO DESC
+	</select>
+	
+	<!-- 강의등록 -->
+	<insert id='addLecture'>
+	    <selectKey keyProperty="lectureNo" resultType="java.lang.Integer" order="BEFORE">
+        select LECTURE_SEQ.NEXTVAL from dual
+    	</selectKey>
+		<![CDATA[
+		INSERT INTO LECTURE(LECTURENO, TITLE, CONTENT, LECTUREDATE, TEACHERNO, MAXPEOPLE) VALUSE(#{lectureNo}, #{title}, #{conent}, #{lecturedate}, #{teacherno}, #{maxpeople})
+    	]]>
+	</insert>
 </mapper>

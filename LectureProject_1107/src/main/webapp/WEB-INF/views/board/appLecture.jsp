@@ -56,7 +56,11 @@
 			 });
 		  });
 	});
-		
+	
+	function selChange() {
+		var sel = document.getElementById('cntPerPage').value;
+		location.href="boardList?nowPage=${paging.nowPage}&cntPerPage="+sel;
+	}
 
   </script>
 </head>
@@ -68,6 +72,7 @@
   <div class="panel panel-default">
     <div class="panel-heading">강의목록</div>
     <div class="panel-body">
+
     <form name="frm" action="#">
        <table class="table table-bordered table-hover">
           <tr>     	
@@ -90,12 +95,31 @@
             <td>${list.nowPeople}</td>
             <td>${list.maxPeople}</td>
            </tr>
-          </c:forEach>
+          </c:forEach>	
        </table>    
        <input id="addLecture" type="button" class="btn btn-primary btn pull-center" value="수강신청하기"/>
       </form>
     </div>
-    <div class="panel-footer"></div>
+    <!-- <div class="panel-footer"></div> -->
+	<div style="display: block; text-align: center;">		
+		<c:if test="${paging.startPage != 1 }">
+			<a href="appLecture?nowPage=${paging.startPage - 1 }&cntPerPage=${paging.cntPerPage}">&lt;</a>
+		</c:if>
+		<c:forEach begin="${paging.startPage }" end="${paging.endPage }" var="p">
+			<c:choose>
+				<c:when test="${p == paging.nowPage }">
+					<b>${p }</b>
+				</c:when>
+				<c:when test="${p != paging.nowPage }">
+					<a href="appLecture?nowPage=${p }&cntPerPage=${paging.cntPerPage}">${p }</a>
+				</c:when>
+			</c:choose>
+		</c:forEach>
+		<c:if test="${paging.endPage != paging.lastPage}">
+			<a href="appLecture?nowPage=${paging.endPage+1 }&cntPerPage=${paging.cntPerPage}">&gt;</a>
+		</c:if>
+	</div>
+
   </div>
 </div>
 

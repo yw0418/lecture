@@ -9,6 +9,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import kr.co.vo.LectureVO;
+import kr.co.vo.PagingVO;
 
 @Repository
 public class BoardDAOImpl implements BoardDAO{
@@ -68,6 +69,27 @@ public class BoardDAOImpl implements BoardDAO{
 	public int isSign(HashMap<String, Object> signMap) throws Exception {
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne("boardMapper.isSign", signMap);
+	}
+
+
+	@Override
+	public int lectureCount() throws Exception{
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("boardMapper.lectureCount");
+	}
+
+
+	@Override
+	public List<LectureVO> selectLecture(PagingVO vo) throws Exception{
+		// TODO Auto-generated method stub
+		return sqlSession.selectList("boardMapper.selectLecture", vo);
+	}
+
+
+	@Override
+	public void addLecture(LectureVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		sqlSession.insert("boardMapper.addLecture", vo);
 	}
 
 

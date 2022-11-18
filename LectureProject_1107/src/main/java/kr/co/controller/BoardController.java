@@ -22,6 +22,7 @@ import com.google.gson.JsonParser;
 import kr.co.service.BoardService;
 import kr.co.service.UserService;
 import kr.co.vo.LectureVO;
+import kr.co.vo.PagingVO;
 import lombok.extern.slf4j.Slf4j;
 
 
@@ -37,12 +38,24 @@ public class BoardController {
 
 	// 수강신청목록
 	@RequestMapping(value = "/board/appLecture", method = RequestMethod.GET)
-	public String appLecture(Model model, HttpSession session) throws Exception{
+	public String appLecture(Model model, HttpSession session, PagingVO vo, String nowPage, String cntPerPage) throws Exception{
 		
 		String id = (String)session.getAttribute("id");
 		
+		int total = service.lectureCount();
+		if (nowPage == null && cntPerPage == null) {
+			nowPage = "1";
+			cntPerPage = "5";
+		} else if (nowPage == null) {
+			nowPage = "1";
+		} else if (cntPerPage == null) { 
+			cntPerPage = "5";
+		}
+		vo = new PagingVO(total, Integer.parseInt(nowPage), Integer.parseInt(cntPerPage));
+		
 		model.addAttribute("loginId", userService.oneInfo(id));
-		model.addAttribute("lectList", service.lectureList());
+		model.addAttribute("paging", vo);
+		model.addAttribute("lectList", service.selectLecture(vo));
 		
 		return "/board/appLecture";
 	}
@@ -85,14 +98,12 @@ public class BoardController {
 		return returnMap;
 	}
 	
-	
 	// 단일 수강신청하기
 	@RequestMapping(value = "/board/appLectureOne", method = RequestMethod.POST)
 	public @ResponseBody HashMap<String, Object> appLectureOne(@RequestParam Integer signLectureNo, HttpSession session) throws Exception {
 		HashMap<String, Object> returnMap = new HashMap<String, Object>();
 		HashMap<String, Object> param = new HashMap<String, Object>();
-		
-		System.out.println("=======테스트===========");
+
 		param.put("signLectureNo", signLectureNo);
 		
 		String id = (String)session.getAttribute("id");
@@ -113,6 +124,14 @@ public class BoardController {
 	public String addStudy() {
 		
 		return "/board/addStudy";
+	}
+	
+	@RequestMapping(value = "/board/addStudy", method = RequestMethod.POST)
+	public @ResponseBody String addStudy2(LectureVO vo) throws Exception{
+		
+		service.addLecture(vo);
+		
+		return "1";
 	}
 	
 

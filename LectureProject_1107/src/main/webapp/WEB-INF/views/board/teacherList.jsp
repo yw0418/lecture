@@ -41,8 +41,8 @@
           </c:forEach>
        </table>   
     </div>
-    <div class="panel-footer">footer</div>
-    <p>${member.id}님 환영 합니다.</p>
+    <div class="panel-footer"><p>${member.id}님 환영 합니다.</p></div>
+    
   </div>
 </div>
 

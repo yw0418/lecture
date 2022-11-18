@@ -5,6 +5,7 @@ import java.util.List;
 
 import kr.co.vo.BoardVO;
 import kr.co.vo.LectureVO;
+import kr.co.vo.PagingVO;
 import kr.co.vo.SignVO;
 
 public interface BoardService {
@@ -32,4 +33,13 @@ public interface BoardService {
 	
 	// 기존 수강신청 목록에 있는지 조회
 	public int isSign(HashMap<String, Object> signMap) throws Exception;
+	
+	// 게시물 총 갯수
+	public int lectureCount() throws Exception;
+
+	// 페이징 처리 게시글 조회
+	public List<LectureVO> selectLecture(PagingVO vo) throws Exception;
+	
+	// (교사)강의등록
+	public void addLecture(LectureVO vo) throws Exception;
 }

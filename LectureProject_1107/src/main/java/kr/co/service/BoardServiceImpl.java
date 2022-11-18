@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import kr.co.dao.BoardDAO;
 import kr.co.vo.BoardVO;
 import kr.co.vo.LectureVO;
+import kr.co.vo.PagingVO;
 import kr.co.vo.SignVO;
 
 @Service
@@ -65,6 +66,25 @@ public class BoardServiceImpl implements BoardService{
 	public int isSign(HashMap<String, Object> signMap) throws Exception {
 		// TODO Auto-generated method stub
 		return dao.isSign(signMap);
+	}
+
+	@Override
+	public int lectureCount() throws Exception {
+		// TODO Auto-generated method stub
+		return dao.lectureCount();
+	}
+
+	@Override
+	public List<LectureVO> selectLecture(PagingVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.selectLecture(vo);
+	}
+
+	@Override
+	public void addLecture(LectureVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		dao.addLecture(vo);
+		
 	}
 
 

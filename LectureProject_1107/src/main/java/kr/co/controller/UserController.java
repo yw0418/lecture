@@ -76,6 +76,7 @@ public class UserController {
 		UserVO login = service.login(vo);
 		String loginid = login.getId();
 		String auth = login.getAuth();
+		String name = login.getName();
 		
 		boolean pwdMatch = pwdEncoder.matches(vo.getPassword(), login.getPassword());
 
@@ -83,6 +84,7 @@ public class UserController {
 			session.setAttribute("member", login);
 			session.setAttribute("id", loginid);
 			session.setAttribute("auth", auth);
+			session.setAttribute("name", name);
 		} else {
 			session.setAttribute("member", null);
 			rttr.addFlashAttribute("msg", false);

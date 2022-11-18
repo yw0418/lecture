@@ -11,5 +11,8 @@
 	<%
   String auth = (String)session.getAttribute("auth");
 	%>
+	<%
+  String name = (String)session.getAttribute("name");
+	%>
 </body>
 </html>

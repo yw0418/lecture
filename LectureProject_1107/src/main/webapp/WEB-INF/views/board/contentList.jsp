@@ -3,6 +3,8 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>   
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+<jsp:include page="../common/auth.jsp"/>  
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,9 +24,8 @@
 		  
 		 $.ajax({
 			data: {"signLectureNo" : $("input[name='signLectureNo']").val()},
-			url: "${contextPath}/board/test",
+			url: "${contextPath}/board/appLectureOne",
 			type: "POST",
-			dataType: "json",
 			success: function(data){
 				alert("수강신청이 완료되었습니다.");
 				window.location = '${contextPath}/board/myStudy';
@@ -33,6 +34,11 @@
 				alert("error");
 			}
 		 });
+	  });
+	  
+	  $("#back").on("click", function(){
+		  
+		window.location = '${contextPath}/board/appLecture';
 	  });
   }); 
   </script>
@@ -75,7 +81,10 @@
        	<p>${list.content }</p>  
     </div>
     <div class="panel-footer">
-    	<button id="create" class="btn btn-primary btn-sm">수강신청하기</button>
+    	<c:if test="${auth eq 'student' }">
+    	<button id="create" class="btn btn-primary btn-sm">수강 신청하기</button>
+    	</c:if>
+    	<button id="back" class="btn btn-primary btn-sm">목록 돌아가기</button>
     </div>
   </div>
 </div>
