@@ -45,4 +45,21 @@ public interface BoardDAO {
 	// (교사)강의등록
 	public void addLecture(LectureVO vo) throws Exception;
 	
+	//(교사)강의 삭제
+	public void delOne(int lectureNo) throws Exception;
+	
+	// 첨부파일 업로드
+	public void insertFile(Map<String, Object> map) throws Exception;
+	
+	//첨부파일 조회
+	public List<Map<String, Object>> selectFileList(int bno) throws Exception;
+	
+	//첨부파일 다운로드
+	public Map<String, Object> selectFileInfo(Map<String, Object> map) throws Exception;
+	
+	// 첨부파일 수정
+	public void updateFile(Map<String, Object> map) throws Exception;
+	
+	// (교사) 강의 수정
+	public void updateStudy(LectureVO vo) throws Exception;
 }

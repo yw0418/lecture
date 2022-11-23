@@ -50,7 +50,7 @@
 	<!-- (학생) 수강신청 목록 불러오기 -->
 	<select id='addList' resultType="HashMap">
 		<![CDATA[
-  		SELECT a.title, a.lecturedate, a.nowpeople, a.maxpeople, b.signdate, a.CONTENT, c.NAME
+  		SELECT a.title, a.lecturedate, a.nowpeople, a.maxpeople, b.signdate test, a.CONTENT, c.NAME
   		FROM LECTURE a 
   		INNER JOIN SIGN b 
   		ON b.signlectureno = a.LECTURENO 
@@ -85,9 +85,32 @@
     	]]>
 	</select>
 	
+	<!-- user 페이징처리 카운트 -->
+	<select id='userCount' resultType="java.lang.Integer">
+		<![CDATA[
+		SELECT COUNT(*) FROM USERINFO
+    	]]>
+	</select>
+	
+	<!-- 페이징 처리 후 유저 조회 -->
+	<select id="selectUser" resultType="kr.co.vo.UserVO">
+		<![CDATA[
+		SELECT U.ID, NAME, MAIL, PHONE, USERSTATUS, S.SUBNM, DELFLAG, REGDTM, U.USERNO 
+		FROM USERINFO U
+		INNER JOIN SUBCOMMON S
+		ON U.AUTH = S.SUBID
+		WHERE USERNO BETWEEN #{start} AND #{end}
+		ORDER BY REGDTM DESC
+		]]>
+	</select>
+	
 	<!-- 페이징 처리 후 게시글 조회 -->
 	<select id="selectLecture" resultType="kr.co.vo.LectureVO">
- 		SELECT * FROM LECTURE WHERE LECTURENO BETWEEN #{start} AND #{end} ORDER BY LECTURENO DESC
+		<![CDATA[
+ 		SELECT a.LECTURENO, a.TITLE, a.LECTUREDATE, a.NOWPEOPLE, a.MAXPEOPLE, b.NAME 
+ 		FROM LECTURE a INNER JOIN USERINFO b ON b.USERNO = a.TEACHERNO 
+ 		WHERE LECTURENO BETWEEN #{start} AND #{end} ORDER BY LECTURENO DESC
+		]]>
 	</select>
 	
 	<!-- 강의등록 -->
@@ -96,7 +119,76 @@
         select LECTURE_SEQ.NEXTVAL from dual
     	</selectKey>
 		<![CDATA[
-		INSERT INTO LECTURE(LECTURENO, TITLE, CONTENT, LECTUREDATE, TEACHERNO, MAXPEOPLE) VALUSE(#{lectureNo}, #{title}, #{conent}, #{lecturedate}, #{teacherno}, #{maxpeople})
+		INSERT INTO LECTURE(LECTURENO, TITLE, CONTENT, LECTUREDATE, TEACHERNO, MAXPEOPLE, NOWPEOPLE) VALUES(#{lectureNo}, #{title}, #{content}, sysdate, #{teacherNo}, #{maxPeople}, '0')
     	]]>
 	</insert>
+	
+	<!-- (교사)강의 삭제 -->
+	<delete id="delOne">
+		<![CDATA[
+		DELETE FROM LECTURE WHERE LECTURENO = #{lectureNo}
+		]]>
+	</delete>
+	
+	<!-- 첨부파일 -->
+	<insert id="insertFile" parameterType="hashMap">
+		<selectKey keyProperty="fileNo" resultType="java.lang.Integer" order="BEFORE">
+        SELECT FILE_SEQ.NEXTVAL from dual
+    	</selectKey>
+		<![CDATA[
+		INSERT INTO FILETB(
+			FILE_NO,
+			BNO,
+			ORG_FILE_NAME,
+			STORED_FILE_NAME,
+			FILE_SIZE
+		)VALUES(
+			#{fileNo},
+			#{BNO},
+			#{ORG_FILE_NAME},
+			#{STORED_FILE_NAME},
+			#{FILE_SIZE}
+		)
+		]]>
+    </insert>
+	
+	<!-- 첨부파일 조회 -->
+	<select id="selectFileList" parameterType="int" resultType="hashMap">
+		<![CDATA[
+		SELECT FILE_NO,
+			   ORG_FILE_NAME,
+			   ROUND(FILE_SIZE/1024,1) AS FILE_SIZE
+		  FROM FILETB
+    	 WHERE BNO = #{BNO}
+    	   AND DEL_GB = 'N'
+    	 ORDER BY FILE_NO ASC
+		   ]]>
+	</select>
+	
+	<!-- 첨부파일 다운 -->
+	<select id="selectFileInfo" parameterType="hashMap" resultType="hashMap">
+	<![CDATA[
+		SELECT 
+			STORED_FILE_NAME,
+			ORG_FILE_NAME
+		FROM FILETB
+		WHERE FILE_NO = #{FILE_NO}
+		]]>
+	</select>
+	
+	<!-- 첨부파일 수정 -->
+    <update id="updateFile" parameterType="hashMap">
+    <![CDATA[
+    	UPDATE FILETB SET
+    	DEL_GB = 'Y'
+    	WHERE FILE_NO = #{FILE_NO}
+    	]]>
+    </update>
+    
+    <!-- (교사) 강의  수정 -->
+    <update id="updateStudy">
+    <![CDATA[
+	UPDATE LECTURE SET TITLE=#{title}, CONTENT=#{content}, MAXPEOPLE=#{maxPeople} WHERE LECTURENO=#{lectureNo}
+    	]]>
+    </update>
 </mapper>

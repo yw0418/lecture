@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
+import kr.co.vo.PagingVO;
 import kr.co.vo.UserVO;
 
 @Repository
@@ -25,9 +26,9 @@ public class UserDAOImpl implements UserDAO{
 
 
 	@Override
-	public List<HashMap<String, Object>> userList() throws Exception {
+	public List<HashMap<String, Object>> userList(PagingVO vo) throws Exception {
 		// TODO Auto-generated method stub
-		return sqlSession.selectList("userMapper.userList");
+		return sqlSession.selectList("userMapper.userList", vo);
 	}
 
 
@@ -70,6 +71,34 @@ public class UserDAOImpl implements UserDAO{
 	public int oneNo(String id) throws Exception {
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne("userMapper.oneNo", id);
+	}
+
+
+	@Override
+	public List<HashMap<String, Object>> aprvJoin(PagingVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList("userMapper.aprvJoin", vo);
+	}
+
+
+	@Override
+	public int countBoard() {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("userMapper.countBoard");
+	}
+
+
+	@Override
+	public void aprvUser(HashMap<String, Object> param) throws Exception {
+		sqlSession.update("userMapper.aprvUser", param);
+		
+	}
+
+
+	@Override
+	public void refuseUser(HashMap<String, Object> param) throws Exception {
+		sqlSession.update("userMapper.refuseUser", param);
+		
 	}
 
 	

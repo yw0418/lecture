@@ -18,7 +18,7 @@
 
 <div class="container">
 <jsp:include page="../common/header.jsp"/> 
-  <h2>나의 등록강의(교사)</h2>
+  <h2 style="text-align: center;">나의 등록강의(교사)</h2>
   <div class="panel panel-default">
     <div class="panel-heading">강의목록</div>
     <div class="panel-body">
@@ -33,10 +33,10 @@
 		  <c:forEach var="list" items="${list}">
            <tr>
            	<td><a href="contentList?lectureNo=${list.lectureNo}">${list.title}</a></td>
-           	<td>${list.name}</td>
-			<td><fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${list.lectureDate}"/></td>
-            <td>${list.nowPeople}</td>
-            <td>${list.maxPeople}</td>
+           	<td style="text-align: center;">${list.name}</td>
+			<td style="text-align: center;"><fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${list.lectureDate}"/></td>
+            <td style="text-align: center;">${list.nowPeople}</td>
+            <td style="text-align: center;">${list.maxPeople}</td>
            </tr>
           </c:forEach>
        </table>   

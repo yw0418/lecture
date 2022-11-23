@@ -91,14 +91,14 @@
     <h3 style="text-align: center; padding-top: 50px;">
    		 회원정보
     </h3>
-    <button id="btn-all-close">FAQ ALL Close</button>
+    <button id="btn-all-close">모두 닫기</button>
     <br>
     <table class="table table-bordered table-striped table-dark table-hover">
       <thead class="thead-light text-center">
         <tr>
-          <th text align='center'>권한</th>
-          <th text align='center'>이름</th>
-          <th text align='center'>가입일</th>
+          <th style="text-align: center;">권한</th>
+          <th style="text-align: center;">이름</th>
+          <th style="text-align: center;">가입일</th>
         </tr>
       </thead>
       <tbody class="text-center">
@@ -108,7 +108,7 @@
           <td>${list.SUBNM}</td>
           <td class="text-left" width="50%">
             <div class="panel-faq-container">
-              <p class="panel-faq-title">${list.NAME}</p>
+              <p class="panel-faq-title" style="text-align: center;">${list.NAME}</p>
               <div class="panel-faq-answer">
                 <p>아이디 : ${list.ID}</p>
                 <p>메일 : ${list.MAIL}</p>

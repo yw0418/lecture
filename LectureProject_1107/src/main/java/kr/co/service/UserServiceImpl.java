@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import org.springframework.stereotype.Service;
 
 import kr.co.dao.UserDAO;
+import kr.co.vo.PagingVO;
 import kr.co.vo.UserVO;
 
 @Service
@@ -23,9 +24,9 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public List<HashMap<String, Object>> userList() throws Exception {
+	public List<HashMap<String, Object>> userList(PagingVO vo) throws Exception {
 		// TODO Auto-generated method stub
-		return dao.userList();
+		return dao.userList(vo);
 	}
 
 	@Override
@@ -62,5 +63,29 @@ public class UserServiceImpl implements UserService {
 	public int oneNo(String id) throws Exception {
 		// TODO Auto-generated method stub
 		return dao.oneNo(id);
+	}
+
+	@Override
+	public List<HashMap<String, Object>> aprvJoin(PagingVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.aprvJoin(vo);
+	}
+
+	@Override
+	public int countBoard() {
+		// TODO Auto-generated method stub
+		return dao.countBoard();
+	}
+
+	@Override
+	public void aprvUser(HashMap<String, Object> param) throws Exception {
+		dao.aprvUser(param);
+		
+	}
+
+	@Override
+	public void refuseUser(HashMap<String, Object> param) throws Exception {
+		dao.refuseUser(param);
+		
 	}
 }

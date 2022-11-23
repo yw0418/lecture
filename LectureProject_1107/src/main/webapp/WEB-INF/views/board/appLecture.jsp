@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>   
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<jsp:include page="../common/auth.jsp"/> 
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
 <html lang="en">
@@ -9,6 +10,14 @@
 	<!-- 수강신청 페이지 -->
   <title>Bootstrap Example</title>
   <meta charset="utf-8">
+  <style>
+  .find-btn{
+		text-align: center;
+	}
+	.find-btn1{
+		display :inline-block;
+	}
+	</style>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -68,7 +77,7 @@
  
 <div class="container">
 <jsp:include page="../common/header.jsp"/> 
-  <h2>수강신청</h2>
+  <h2 style="text-align: center;">수강신청</h2>
   <div class="panel panel-default">
     <div class="panel-heading">강의목록</div>
     <div class="panel-body">
@@ -78,7 +87,7 @@
           <tr>     	
           	<td text align='center'><input type="checkbox" id="cbx_chkAll" /></td>
           	<td text align='center'>제목</td>
-            <td text align='center'>작성자</td>
+            <td text align='center'>교사명</td>
             <td text align='center'>현재인원</td>
             <td text align='center'>모집인원</td>
           </tr>
@@ -91,13 +100,17 @@
            		<input type="hidden" name="arrLectureNo" />
            	</td>
            	<td><a href="contentList?lectureNo=${list.lectureNo}">${list.title}</a></td>
-			<td>${list.name}</td>
-            <td>${list.nowPeople}</td>
-            <td>${list.maxPeople}</td>
+			<td style="text-align: center;">${list.name}</td>
+            <td style="text-align: center;">${list.nowPeople}</td>
+            <td style="text-align: center;">${list.maxPeople}</td>
            </tr>
           </c:forEach>	
-       </table>    
-       <input id="addLecture" type="button" class="btn btn-primary btn pull-center" value="수강신청하기"/>
+       </table>
+       <div class="find-btn">    
+       <c:if test="${auth eq 'student' }">
+       <input id="addLecture" type="button" class="btn btn-primary btn pull-center find-btn1" value="수강신청하기"/>
+       </c:if>
+       </div>
       </form>
     </div>
     <!-- <div class="panel-footer"></div> -->

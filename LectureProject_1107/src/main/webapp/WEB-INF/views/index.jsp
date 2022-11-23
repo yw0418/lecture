@@ -26,9 +26,17 @@
 				<p>${member.id}님 환영 합니다.</p>
 			</div>
 			</c:if>
-			<c:if test="${msg == false}">
+			<c:choose>
+			<c:when test="${msg eq 'none'}">
 				<p style="color: red;">로그인 실패! 아이디와 비밀번호 확인해주세요.</p>
-			</c:if>
+			</c:when>
+			<c:when test="${msg eq 'wait'}">
+				<p style="color: red;">로그인 실패! 관리자 승인 대기중입니다.</p>
+			</c:when>
+			<c:when test="${msg eq 'refuse'}">
+				<p style="color: red;">로그인 실패! 승인 거절된 계정입니다.</p>
+			</c:when>
+			</c:choose>
     <div>
        <img src="${contextPath}/resources/images/640.jpg" style="width: 100%; height: 620px;"/>
     </div>

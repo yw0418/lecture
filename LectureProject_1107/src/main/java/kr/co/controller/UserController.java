@@ -28,6 +28,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import kr.co.service.UserService;
+import kr.co.vo.PagingVO;
 import kr.co.vo.UserVO;
 import lombok.extern.slf4j.Slf4j;
 
@@ -47,13 +48,16 @@ public class UserController {
 	
 	
 	@RequestMapping(value = "/user/adminList", method = RequestMethod.GET)
-	public String adminList(Model model) throws Exception {
+	public String adminList(Model model, PagingVO vo) throws Exception {
 		
-		model.addAttribute("userList", service.userList());
+		model.addAttribute("userList", service.userList((vo)));
+		
+		
 		
 		return "/user/adminList";
 	}
 	
+
 	@RequestMapping(value = "/user/joinForm", method = RequestMethod.POST)
 	public String joinForm(UserVO vo) throws Exception {
 		
@@ -69,7 +73,8 @@ public class UserController {
 	}
 	
 	@RequestMapping(value = "/user/login", method = RequestMethod.POST)
-	public String login(UserVO vo, HttpSession session, RedirectAttributes rttr) throws Exception {
+	//public String login(UserVO vo, HttpSession session, RedirectAttributes rttr) throws Exception {
+	public String login(UserVO vo, HttpSession session, Model model) throws Exception {
 		
 		session.getAttribute("member");
 		
@@ -77,21 +82,47 @@ public class UserController {
 		String loginid = login.getId();
 		String auth = login.getAuth();
 		String name = login.getName();
+		int userNo = login.getUserNo();
 		
 		boolean pwdMatch = pwdEncoder.matches(vo.getPassword(), login.getPassword());
+		System.out.println(login.getUserStatus());
+		//if(login.getUserStatus() == "aprv") {
+		if(login.getUserStatus().equals("aprv")) {
+			if(login != null && pwdMatch == true) {
+				session.setAttribute("member", login);
+				session.setAttribute("id", loginid);
+				session.setAttribute("auth", auth);
+				session.setAttribute("name", name);
+				session.setAttribute("userNo", userNo);
+			}else {
+				session.setAttribute("member", null);
+//				rttr.addFlashAttribute("msg", "none");
+				model.addAttribute("msg", "none");
+			}
+		}else if(login.getUserStatus() == "wait"){
+				session.setAttribute("member", null);
+//				rttr.addFlashAttribute("msg", "wait");
+				model.addAttribute("msg", "wait");
+		}else if(login.getUserStatus() == "refuse"){
+				session.setAttribute("member", null);
+//				rttr.addFlashAttribute("msg", "refuse");
+				model.addAttribute("msg", "refuse");
+		} 
 
-		if(login != null && pwdMatch == true) {
+		
+		/*if(login != null && pwdMatch == true) {
 			session.setAttribute("member", login);
 			session.setAttribute("id", loginid);
 			session.setAttribute("auth", auth);
 			session.setAttribute("name", name);
+			session.setAttribute("userNo", userNo);
 		} else {
 			session.setAttribute("member", null);
 			rttr.addFlashAttribute("msg", false);
-		}
+		}*/
 
 
-		return "redirect:/";
+		return "index";
 	}
 	
     
@@ -188,10 +219,8 @@ public class UserController {
 	
 	@RequestMapping(value = "/user/idCheck", method = RequestMethod.GET)
 	public @ResponseBody String idCheck(@RequestParam String id) throws Exception {
-		System.out.println(id);
 		UserVO idIs=service.idCheck(id);
-		
-		
+				
 		if(idIs!=null || id.equals("")) {
 			return "0";
 		}

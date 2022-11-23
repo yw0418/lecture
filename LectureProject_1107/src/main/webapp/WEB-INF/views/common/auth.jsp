@@ -14,5 +14,8 @@
 	<%
   String name = (String)session.getAttribute("name");
 	%>
+	<%
+  int userNo = (Integer)session.getAttribute("userNo");
+	%>
 </body>
 </html>

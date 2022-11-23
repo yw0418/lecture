@@ -18,10 +18,6 @@
   <script type="text/javascript">
    $(document).ready(function() {
 	  $("#create").on("click", function(){
-	  
-		  var te = $("input[name='signLectureNo']").val();
-		  alert(te);
-		  
 		 $.ajax({
 			data: {"signLectureNo" : $("input[name='signLectureNo']").val()},
 			url: "${contextPath}/board/appLectureOne",
@@ -36,10 +32,33 @@
 		 });
 	  });
 	  
+	  $("#del").on("click", function(){
+		  $.ajax({
+			  data: {"lectureNo" : $("input[name='signLectureNo']").val()},
+			  url: "${contextPath}/board/delOne",
+			  type: "POST",
+		      success: function(data){
+		    	  alert("삭제되었습니다!");
+		    	  window.location = '${contextPath}/board/teacherList';
+		      },
+		      error: function(){
+		    	  alert("error!");
+		      }
+		  });
+	  });
+	  
 	  $("#back").on("click", function(){
 		  
 		window.location = '${contextPath}/board/appLecture';
 	  });
+	  
+	$("#readForm").on("click", function(fileNo){
+		var formObj = $("form[name='readForm']");
+		$("#FILE_NO").attr("value", fileNo);
+		formObj.submit();
+	});
+	  
+		
   }); 
   </script>
 </head>
@@ -47,7 +66,7 @@
  
 <div class="container">
 <jsp:include page="../common/header.jsp"/> 
-  <h2>수강신청</h2>
+  <h2 style="text-align: center;">강의 상세보기</h2>
   <div class="panel panel-default">
     <div class="panel-heading">강의 상세보기</div>
     <div class="panel-body">
@@ -56,16 +75,12 @@
             <tr>
              <td style="width: 110px; vertical-align: middle;">제목</td>
              <td>${list.title}</td>
+             <td style="width: 110px; vertical-align: middle;">현재인원</td>
+             <td>${list.nowPeople}</td>
            </tr>
             <tr>
              <td style="width: 110px; vertical-align: middle;">작성자</td>
              <td>${list.name}</td>
-             <td style="width: 110px; vertical-align: middle;">작성일자</td>
-             <td>${list.name}</td>
-           </tr>
-            <tr>
-             <td style="width: 110px; vertical-align: middle;">현재인원</td>
-             <td>${list.nowPeople}</td>
              <td style="width: 110px; vertical-align: middle;">모집인원</td>
              <td>${list.maxPeople}</td>
            </tr>
@@ -74,17 +89,39 @@
              <td><fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${list.lectureDate}"/></td>
             </tr>
            <tr>
-			<td style="width: 110px; vertical-align: middle;">내용 <input type="hidden" name="signLectureNo" value="${list.lectureNo }"></td>
+			<td style="width: 110px; vertical-align: middle;">내용
+			<input type="hidden" name="signLectureNo" value="${list.lectureNo }">
+			
+			</td>
            </tr>
        </table> 
-       </form>  
+       </form>
+	
+		<form id = "readForm" name = "readForm">
+        <div class="form-group" style="border: 1px solid #dbdbdb;">
+        <input type="hidden" id="FILE_NO" name="FILE_NO" value=""> 
+        <input type="hidden" name="lectureNo" value="${list.lectureNo }">
+			<c:forEach var="file" items="${file}">
+				<a href="#" onclick="fn_fileDown('${file.FILE_NO}'); return false;">${file.ORG_FILE_NAME}</a>(${file.FILE_SIZE})<br>
+			</c:forEach>
+		</div> 
+		</form>
+		
        	<p>${list.content }</p>  
     </div>
     <div class="panel-footer">
     	<c:if test="${auth eq 'student' }">
+    	<div style="text-align: center;">
     	<button id="create" class="btn btn-primary btn-sm">수강 신청하기</button>
-    	</c:if>
     	<button id="back" class="btn btn-primary btn-sm">목록 돌아가기</button>
+    	</div>
+    	</c:if>
+    	 <c:if test="${auth eq 'teacher' }">
+    	 <div style="text-align: center;">
+    	<button id="del" class="btn btn-primary btn-sm pull-center">삭제하기</button>
+    	<button id="up" onclick="location.href='${contextPath}/board/updateStudy?lectureNo=${list.lectureNo }'" class="btn btn-primary btn-sm pull-center">수정하기</button>
+    	</div>
+    	</c:if>
     </div>
   </div>
 </div>

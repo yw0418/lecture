@@ -9,12 +9,27 @@
 	</select>
 	
 	<!-- 전체 유저 불러오기 -->
-	<select id='userList' resultType="HashMap">
+	<select id='userList' resultType="HashMap" >
 		<![CDATA[
-		SELECT U.ID, NAME, MAIL, PHONE, USERSTATUS, S.SUBNM, DELFLAG, REGDTM 
+		SELECT U.ID, NAME, MAIL, PHONE, S1.SUBNM AS APRVNM, S.SUBNM, DELFLAG, REGDTM, U.USERNO 
 		FROM USERINFO U
 		INNER JOIN SUBCOMMON S
 		ON U.AUTH = S.SUBID
+		INNER JOIN SUBCOMMON S1
+		ON U.USERSTATUS  = S1.SUBID
+		WHERE USERNO BETWEEN #{start} AND #{end}
+		ORDER BY REGDTM DESC
+    	]]>
+	</select>
+	
+	<!-- 상태 불러오기 -->
+	<select id='aprvJoin' resultType="HashMap">
+		<![CDATA[
+		SELECT S.SUBNM AS APRVNM
+		FROM USERINFO U
+		INNER JOIN SUBCOMMON S
+		ON U.USERSTATUS  = S.SUBID
+		WHERE USERNO BETWEEN #{start} AND #{end}
 		ORDER BY REGDTM DESC
     	]]>
 	</select>
@@ -32,7 +47,7 @@
 	<!-- 로그인 -->
 	<select id='login' resultType="kr.co.vo.UserVO">
 		<![CDATA[
-		SELECT ID, PASSWORD, AUTH, NAME FROM USERINFO WHERE ID=#{id}
+		SELECT ID, PASSWORD, AUTH, NAME, USERNO, USERSTATUS FROM USERINFO WHERE ID=#{id}
     	]]>
 	</select>
 	
@@ -63,5 +78,20 @@
 		SELECT USERNO FROM USERINFO WHERE ID = #{id}
     	]]>
 	</select>
+	
+	<!-- 총 유저 갯수 출력 -->
+	<select id="countBoard" resultType="int">
+		SELECT COUNT(*) FROM USERINFO
+	</select>
+	
+	<!-- 가입승인 -->
+	<update id='aprvUser'>
+		UPDATE USERINFO set USERSTATUS = 'aprv' where USERNO=#{userNo}
+	</update>
+	
+	<!-- 가입거절 -->
+	<update id='refuseUser'>
+		UPDATE USERINFO set USERSTATUS = 'refuse' where USERNO=#{userNo}
+	</update>
 	
 </mapper>

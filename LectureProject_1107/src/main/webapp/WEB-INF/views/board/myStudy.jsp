@@ -96,10 +96,10 @@
     <table class="table table-bordered table-striped table-dark table-hover">
       <thead class="thead-light text-center">
         <tr>
-          <th text align='center'>교사명</th>
-          <th text align='center'>수강목록</th>
-          <th text align='center'>정원</th>
-          <th text align='center'>신청일자</th>
+          <th style="text-align: center;">교사명</th>
+          <th style="text-align: center;">수강목록</th>
+          <th style="text-align: center;">정원</th>
+          <th style="text-align: center;">신청일자</th>
         </tr>
       </thead>
       <tbody class="text-center">
@@ -116,7 +116,7 @@
             </div>
           </td>
           <td>${list.NOWPEOPLE}/${list.MAXPEOPLE }</td>
-          <td><fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${list.lectureDate}"/>${list.SIGNDATE}</td>
+          <td><fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${list.test }"/></td>
         </tr>
         </c:forEach>
                

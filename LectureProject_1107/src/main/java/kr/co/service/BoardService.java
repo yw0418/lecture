@@ -2,6 +2,9 @@ package kr.co.service;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import kr.co.vo.BoardVO;
 import kr.co.vo.LectureVO;
@@ -41,5 +44,17 @@ public interface BoardService {
 	public List<LectureVO> selectLecture(PagingVO vo) throws Exception;
 	
 	// (교사)강의등록
-	public void addLecture(LectureVO vo) throws Exception;
+	public void addLecture(LectureVO vo, MultipartHttpServletRequest mpRequest) throws Exception;
+	
+	//(교사)강의 삭제
+	public void delOne(int lectureNo) throws Exception;
+	
+	//첨부파일 조회
+	public List<Map<String, Object>> selectFileList(int bno) throws Exception;
+	
+	//첨부파일 다운로드
+	public Map<String, Object> selectFileInfo(Map<String, Object> map) throws Exception;
+	
+	// (교사) 강의 수정
+	public void updateStudy(LectureVO vo) throws Exception;
 }

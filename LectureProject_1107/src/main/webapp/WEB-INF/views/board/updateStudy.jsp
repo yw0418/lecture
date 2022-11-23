@@ -13,72 +13,47 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   <script type="text/javascript">
-	$(document).ready(function() {
-		
-/* 		$("#goInsert").on("click", function(){
-			
-			$.ajax({
-				data : {
-					"title" : $("#title").val(),
-					"content" : $("#content").val(),
-					"maxPeople" : $("#maxPeople").val(),
-					"teacherNo" : $("#teacherNo").val()
-					},
-				url : "${contextPath}/board/addStudy",
-				enctype: 'multipart/form-data',
-				processData: false,
-				contentType: false,
-				type : "POST",
-				success : function(data){
-					if(data == "1"){
-					alert("강의등록이 완료되었습니다.");
-					window.location = '${contextPath}/board/teacherList';
-					}
-					else{
-					alert("다시 입력해주세요!");
-						}
-					},
-			 	error : function(){
-			 		alert("error");
-			 	}
-			});
-		}); */
-		
-		$("#goInsert").on("click", function(){
-			var formObj = $("form[name='frm']");
+	  
+	  function goInsert(){
+		  	var title=$("#title").val();
+		  	var maxPeople=$("#maxPeople").val();
+		  	var content=$("#content").val();
+		  	
+		  	if(title=="" || maxPeople=="" || content==""){
+		  		alert("모두 입력해주세요.");
+		  		return false;
+		  	}
+		  	
+		  	document.frm.submit(); // 전송
+		  }
 
-			formObj.submit();
-		});
-		
-	});
-  
   </script>
 </head>
 <body>
 <div class="container">
   <jsp:include page="../common/header.jsp"/> 
-  <h2 style="text-align: center;">강의등록</h2>
+  <h2 style="text-align: center;">강의수정</h2>
   <div class="panel panel-default">
-    <div class="panel-heading">강의등록</div>
+    <div class="panel-heading">강의수정</div>
     <div class="panel-body">
-      <form name="frm" method="post" enctype="multipart/form-data" action="${contextPath}/board/addStudy">
+      <form name="frm" method="post" enctype="multipart/form-data" action="${contextPath}/board/updateStudy">
         <table class="table table-bordered" style="text-align: center; border: 1px solid #dddddd;">
            <tr>
              <td style="width: 110px; vertical-align: middle;">이름</td>
-             <td><input type="hidden" id="teacherNo" name="teacherNo" value="${userNo}"/>${name}</td>
+             <td><input type="hidden" id="lectureNo" name="lectureNo" value="${list.lectureNo }"/>${name}</td>
            </tr>
            <tr>
              <td style="width: 110px; vertical-align: middle;">강의명</td>
-             <td colspan="2"><input id="title" name="title" class="form-control" type="text" maxlength="20" placeholder="강의명을 입력하세요."/></td>
+             <td colspan="2"><input id="title" name="title" class="form-control" type="text" maxlength="20" value="${list.title }"/></td>
      
            </tr>
            <tr>
              <td style="width: 110px; vertical-align: middle;">정원</td>
-             <td colspan="10"><input id="maxPeople" name="maxPeople" class="form-control" type="text" maxlength="20" placeholder="정원을 입력하세요."/></td>            
+             <td colspan="10"><input id="maxPeople" name="maxPeople" class="form-control" type="text" maxlength="20" value="${list.maxPeople }"/></td>            
            </tr>
            <tr>
              <td style="width: 110px; vertical-align: middle;">강의내용</td>
-             <td colspan="10"><input id="content" name="content" class="form-control" type="text" maxlength="300" placeholder="강의 소개글을 입력하세요."/></td>            
+             <td colspan="10"><input id="content" name="content" class="form-control" type="text" maxlength="300" value="${list.content }"/></td>            
            </tr>
            <tr>
              <td style="width: 110px; vertical-align: middle;">첨부파일</td>
@@ -86,7 +61,7 @@
            </tr>
             <tr>
              <td colspan="3" style="text-align: center;">
-                <input type="button" class="btn btn-primary pull-center" value="강의 등록하기" id="goInsert"/>
+                <input type="button" class="btn btn-primary pull-center" value="강의 수정하기" onclick="goInsert()"/>
              </td>             
            </tr>
          </table>

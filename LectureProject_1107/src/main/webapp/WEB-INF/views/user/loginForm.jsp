@@ -21,7 +21,7 @@
 <body>
 <div class="container">
   <jsp:include page="../common/header.jsp"/> 
-  <h2>로그인</h2>
+  <h2 style="text-align: center;">로그인</h2>
   <div class="panel panel-default">
     <div class="panel-heading">로그인화면</div>
     <div class="panel-body">
@@ -61,7 +61,7 @@
 	    </div>	
 	  </div>
 	</div>   
-    <div class="panel-footer">footer</div>
+    <div class="panel-footer"></div>
   </div>
 </div>
 

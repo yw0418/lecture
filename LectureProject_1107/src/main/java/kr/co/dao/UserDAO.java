@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import kr.co.vo.LectureVO;
+import kr.co.vo.PagingVO;
 import kr.co.vo.UserVO;
 
 
@@ -13,7 +14,7 @@ public interface UserDAO {
 	public UserVO idCheck(String id) throws Exception;
 	
 	//유저 전체 정보 불러오기
-	public List<HashMap<String, Object>> userList() throws Exception;
+	public List<HashMap<String, Object>> userList(PagingVO vo) throws Exception;
 	
 	//회원가입
 	public void joinUser(UserVO vo) throws Exception;
@@ -32,4 +33,16 @@ public interface UserDAO {
 	
 	//유저번호 찾기
 	public int oneNo(String id) throws Exception;
+	
+	//승인상태 확인
+	public List<HashMap<String, Object>> aprvJoin(PagingVO vo) throws Exception;
+	
+	// 유저 총 갯수
+	public int countBoard();
+	
+	// 가입승인
+	public void aprvUser(HashMap<String, Object> param) throws Exception;
+	
+	// 가입거절
+	public void refuseUser(HashMap<String, Object> param) throws Exception;
 }
