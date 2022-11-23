@@ -8,7 +8,9 @@ import javax.inject.Inject;
 import org.springframework.stereotype.Service;
 
 import kr.co.dao.UserDAO;
+import kr.co.vo.Criteria;
 import kr.co.vo.PagingVO;
+import kr.co.vo.SearchCriteria;
 import kr.co.vo.UserVO;
 
 @Service
@@ -24,9 +26,9 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public List<HashMap<String, Object>> userList(PagingVO vo) throws Exception {
+	public List<HashMap<String, Object>> userList(SearchCriteria cri) throws Exception {
 		// TODO Auto-generated method stub
-		return dao.userList(vo);
+		return dao.userList(cri);
 	}
 
 	@Override
@@ -72,9 +74,9 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public int countBoard() {
+	public int countBoard(SearchCriteria cri) {
 		// TODO Auto-generated method stub
-		return dao.countBoard();
+		return dao.countBoard(cri);
 	}
 
 	@Override

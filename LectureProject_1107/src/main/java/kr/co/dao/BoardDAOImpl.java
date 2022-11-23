@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import kr.co.vo.LectureVO;
 import kr.co.vo.PagingVO;
+import kr.co.vo.SearchCriteria;
 
 @Repository
 public class BoardDAOImpl implements BoardDAO{
@@ -74,16 +75,16 @@ public class BoardDAOImpl implements BoardDAO{
 
 
 	@Override
-	public int lectureCount() throws Exception{
+	public int lectureCount(SearchCriteria cri) throws Exception{
 		// TODO Auto-generated method stub
-		return sqlSession.selectOne("boardMapper.lectureCount");
+		return sqlSession.selectOne("boardMapper.lectureCount", cri);
 	}
 
 
 	@Override
-	public List<LectureVO> selectLecture(PagingVO vo) throws Exception{
+	public List<LectureVO> selectLecture(SearchCriteria cri) throws Exception{
 		// TODO Auto-generated method stub
-		return sqlSession.selectList("boardMapper.selectLecture", vo);
+		return sqlSession.selectList("boardMapper.selectLecture", cri);
 	}
 
 

@@ -116,13 +116,11 @@
             </div>
           </td>
           <td>${list.NOWPEOPLE}/${list.MAXPEOPLE }</td>
-          <td><fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${list.test }"/></td>
+          <td><fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${list.signdate }"/>${list.SIGNDATE }</td>
         </tr>
         </c:forEach>
                
-<!--         <tr class="bg-info">
-          <td colspan=4 class="text-left">자주 묻는 질문 총 합계</td>
-        </tr> -->
+
       </tbody>
     </table>
   </div>

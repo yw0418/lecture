@@ -50,7 +50,7 @@
 	<!-- (학생) 수강신청 목록 불러오기 -->
 	<select id='addList' resultType="HashMap">
 		<![CDATA[
-  		SELECT a.title, a.lecturedate, a.nowpeople, a.maxpeople, b.signdate test, a.CONTENT, c.NAME
+  		SELECT a.title, a.lecturedate, a.nowpeople, a.maxpeople, b.signdate, a.CONTENT, c.NAME
   		FROM LECTURE a 
   		INNER JOIN SIGN b 
   		ON b.signlectureno = a.LECTURENO 
@@ -80,9 +80,8 @@
 	
 	<!-- lecture페이징처리 카운트 -->
 	<select id='lectureCount' resultType="java.lang.Integer">
-		<![CDATA[
-		SELECT COUNT(*) FROM LECTURE
-    	]]>
+		SELECT COUNT(*) FROM LECTURE  WHERE 1=1
+		<include refid="search"></include>
 	</select>
 	
 	<!-- user 페이징처리 카운트 -->
@@ -106,11 +105,14 @@
 	
 	<!-- 페이징 처리 후 게시글 조회 -->
 	<select id="selectLecture" resultType="kr.co.vo.LectureVO">
-		<![CDATA[
- 		SELECT a.LECTURENO, a.TITLE, a.LECTUREDATE, a.NOWPEOPLE, a.MAXPEOPLE, b.NAME 
- 		FROM LECTURE a INNER JOIN USERINFO b ON b.USERNO = a.TEACHERNO 
- 		WHERE LECTURENO BETWEEN #{start} AND #{end} ORDER BY LECTURENO DESC
-		]]>
+		SELECT MP.*
+		 FROM ( 
+				SELECT a.LECTURENO, a.TITLE, a.LECTUREDATE, a.NOWPEOPLE, a.MAXPEOPLE, b.NAME, ROW_NUMBER() OVER(ORDER BY USERNO DESC) AS RNUM
+				FROM LECTURE a INNER JOIN USERINFO b ON b.USERNO = a.TEACHERNO 
+				WHERE 1=1
+		        <include refid="search"></include>               ) MP
+		WHERE RNUM BETWEEN #{rowStart} AND #{rowEnd}
+		ORDER BY LECTURENO DESC
 	</select>
 	
 	<!-- 강의등록 -->
@@ -191,4 +193,14 @@
 	UPDATE LECTURE SET TITLE=#{title}, CONTENT=#{content}, MAXPEOPLE=#{maxPeople} WHERE LECTURENO=#{lectureNo}
     	]]>
     </update>
+    
+   	 <sql id="search">
+		<if test="searchType != null">
+			<if test="searchType == 't'.toString()">AND TITLE LIKE '%' || #{keyword} || '%'</if>
+			<if test="searchType == 'c'.toString()">AND CONTENT LIKE '%' || #{keyword} || '%'</if>
+			<if test="searchType == 'w'.toString()">AND NAME LIKE '%' || #{keyword} || '%'</if>
+			<if test="searchType == 'tc'.toString()">AND (TITLE LIKE '%' || #{keyword} || '%') or (CONTENT LIKE '%' || #{keyword} || '%')</if>
+		</if>
+	</sql>
+	
 </mapper>

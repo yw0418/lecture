@@ -10,16 +10,21 @@
 	
 	<!-- 전체 유저 불러오기 -->
 	<select id='userList' resultType="HashMap" >
-		<![CDATA[
-		SELECT U.ID, NAME, MAIL, PHONE, S1.SUBNM AS APRVNM, S.SUBNM, DELFLAG, REGDTM, U.USERNO 
-		FROM USERINFO U
-		INNER JOIN SUBCOMMON S
-		ON U.AUTH = S.SUBID
-		INNER JOIN SUBCOMMON S1
-		ON U.USERSTATUS  = S1.SUBID
-		WHERE USERNO BETWEEN #{start} AND #{end}
-		ORDER BY REGDTM DESC
-    	]]>
+		
+		SELECT MP.*
+		 FROM ( 
+				SELECT U.ID, NAME, MAIL, PHONE, S1.SUBNM AS APRVNM, S.SUBNM AS AUTHNM, DELFLAG, REGDTM, U.USERNO, ROW_NUMBER() OVER(ORDER BY USERNO DESC) AS RNUM
+				FROM USERINFO U
+				INNER JOIN SUBCOMMON S
+				ON U.AUTH = S.SUBID
+				INNER JOIN SUBCOMMON S1
+				ON U.USERSTATUS  = S1.SUBID
+				WHERE 1=1 
+	         	<include refid="search"></include>
+		                       ) MP
+		WHERE RNUM BETWEEN #{rowStart} AND #{rowEnd}
+		ORDER BY RNUM DESC
+
 	</select>
 	
 	<!-- 상태 불러오기 -->
@@ -81,7 +86,8 @@
 	
 	<!-- 총 유저 갯수 출력 -->
 	<select id="countBoard" resultType="int">
-		SELECT COUNT(*) FROM USERINFO
+		SELECT COUNT(*) FROM USERINFO WHERE 1=1
+		<include refid="search"></include>	
 	</select>
 	
 	<!-- 가입승인 -->
@@ -93,5 +99,14 @@
 	<update id='refuseUser'>
 		UPDATE USERINFO set USERSTATUS = 'refuse' where USERNO=#{userNo}
 	</update>
+	
+	<sql id="search">
+		<if test="searchType != null">
+			<if test="searchType == 't'.toString()">AND AUTHNM LIKE '%' || #{keyword} || '%'</if>
+			<if test="searchType == 'c'.toString()">AND APRVNM LIKE '%' || #{keyword} || '%'</if>
+			<if test="searchType == 'w'.toString()">AND NAME LIKE '%' || #{keyword} || '%'</if>
+			<if test="searchType == 'tc'.toString()">AND ID LIKE '%' || #{keyword} || '%'</if>
+		</if>
+	</sql>
 	
 </mapper>

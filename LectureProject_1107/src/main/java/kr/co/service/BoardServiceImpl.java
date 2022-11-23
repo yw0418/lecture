@@ -15,6 +15,7 @@ import kr.co.util.FileUtils;
 import kr.co.vo.BoardVO;
 import kr.co.vo.LectureVO;
 import kr.co.vo.PagingVO;
+import kr.co.vo.SearchCriteria;
 import kr.co.vo.SignVO;
 
 @Service
@@ -76,15 +77,15 @@ public class BoardServiceImpl implements BoardService{
 	}
 
 	@Override
-	public int lectureCount() throws Exception {
+	public int lectureCount(SearchCriteria cri) throws Exception {
 		// TODO Auto-generated method stub
-		return dao.lectureCount();
+		return dao.lectureCount(cri);
 	}
 
 	@Override
-	public List<LectureVO> selectLecture(PagingVO vo) throws Exception {
+	public List<LectureVO> selectLecture(SearchCriteria cri) throws Exception {
 		// TODO Auto-generated method stub
-		return dao.selectLecture(vo);
+		return dao.selectLecture(cri);
 	}
 
 

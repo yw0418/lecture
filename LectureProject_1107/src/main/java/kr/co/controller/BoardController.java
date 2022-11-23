@@ -27,8 +27,11 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import kr.co.service.BoardService;
 import kr.co.service.UserService;
+import kr.co.vo.Criteria;
 import kr.co.vo.LectureVO;
+import kr.co.vo.PageMaker;
 import kr.co.vo.PagingVO;
+import kr.co.vo.SearchCriteria;
 import lombok.extern.slf4j.Slf4j;
 
 
@@ -44,51 +47,33 @@ public class BoardController {
 
 	// 수강신청목록
 	@RequestMapping(value = "/board/appLecture", method = RequestMethod.GET)
-	public String appLecture(Model model, HttpSession session, PagingVO vo, String nowPage, String cntPerPage) throws Exception{
+	public String appLecture(Model model, HttpSession session, SearchCriteria cri) throws Exception{
 		
 		String id = (String)session.getAttribute("id");
 		
-		int total = service.lectureCount();
-		if (nowPage == null && cntPerPage == null) {
-			nowPage = "1";
-			cntPerPage = "5";
-		} else if (nowPage == null) {
-			nowPage = "1";
-		} else if (cntPerPage == null) { 
-			cntPerPage = "5";
-		}
-		vo = new PagingVO(total, Integer.parseInt(nowPage), Integer.parseInt(cntPerPage));
-		
+		model.addAttribute("lectList", service.selectLecture(cri));
 		model.addAttribute("loginId", userService.oneInfo(id));
-		model.addAttribute("paging", vo);
-		model.addAttribute("lectList", service.selectLecture(vo));
+
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(service.lectureCount(cri));
+		
+		model.addAttribute("pageMaker", pageMaker);
 		
 		return "/board/appLecture";
 	}
 	
 	@RequestMapping(value = "/board/reqList", method = RequestMethod.GET)
-	public String reqList(Model model, PagingVO vo, String nowPage, String cntPerPage) throws Exception {
-		
-		int total = service.lectureCount();
-		if (nowPage == null && cntPerPage == null) {
-			nowPage = "1";
-			cntPerPage = "5";
-		} else if (nowPage == null) {
-			nowPage = "1";
-		} else if (cntPerPage == null) { 
-			cntPerPage = "5";
-		}
-	    
-		vo.setStart(33);
-		vo.setEnd(43);
-		
-		vo = new PagingVO(total, Integer.parseInt(nowPage), Integer.parseInt(cntPerPage));
-		
-		log.debug("yw={}", vo);
-		
-		model.addAttribute("paging", vo);
+	public String reqList(Model model, SearchCriteria cri) throws Exception {
 
-		model.addAttribute("userlist", userService.userList(vo));
+		model.addAttribute("userlist", userService.userList(cri));
+		
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(userService.countBoard(cri));
+		
+		model.addAttribute("pageMaker", pageMaker);
+		model.addAttribute("scri", cri);
 		
 		return "/board/reqList";
 	}
@@ -125,7 +110,7 @@ public class BoardController {
 	
 	// 글 하나 불러오기
 	@RequestMapping(value = "/board/contentList", method = RequestMethod.GET)
-	public String contentList(@RequestParam("lectureNo") int lectureNo, Model model) throws Exception {
+	public String contentList(@RequestParam("lectureNo") int lectureNo, LectureVO vo, Model model) throws Exception {
 		
 		model.addAttribute("list", service.contentList(lectureNo));
 		
@@ -266,8 +251,8 @@ public class BoardController {
 		return "1";
 	}
 	
-	@RequestMapping(value="/board/fileDown")
-	public void fileDown(@RequestParam Map<String, Object> map, HttpServletResponse response, int lectureNo) throws Exception{
+	@RequestMapping(value="/board/fileDown", method = RequestMethod.GET)
+	public void fileDown(@RequestParam Map<String, Object> map, HttpServletResponse response) throws Exception{
 		Map<String, Object> resultMap = service.selectFileInfo(map);
 		String storedFileName = (String) resultMap.get("STORED_FILE_NAME");
 		String originalFileName = (String) resultMap.get("ORG_FILE_NAME");

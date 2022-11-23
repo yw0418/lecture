@@ -8,7 +8,9 @@ import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
+import kr.co.vo.Criteria;
 import kr.co.vo.PagingVO;
+import kr.co.vo.SearchCriteria;
 import kr.co.vo.UserVO;
 
 @Repository
@@ -26,9 +28,9 @@ public class UserDAOImpl implements UserDAO{
 
 
 	@Override
-	public List<HashMap<String, Object>> userList(PagingVO vo) throws Exception {
+	public List<HashMap<String, Object>> userList(SearchCriteria cri) throws Exception {
 		// TODO Auto-generated method stub
-		return sqlSession.selectList("userMapper.userList", vo);
+		return sqlSession.selectList("userMapper.userList", cri);
 	}
 
 
@@ -82,9 +84,9 @@ public class UserDAOImpl implements UserDAO{
 
 
 	@Override
-	public int countBoard() {
+	public int countBoard(SearchCriteria cri) {
 		// TODO Auto-generated method stub
-		return sqlSession.selectOne("userMapper.countBoard");
+		return sqlSession.selectOne("userMapper.countBoard", cri);
 	}
 
 

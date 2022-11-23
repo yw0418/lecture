@@ -52,14 +52,21 @@
 		window.location = '${contextPath}/board/appLecture';
 	  });
 	  
-	$("#readForm").on("click", function(fileNo){
+/* 	$("#readForm").on("click", function(fileNo){
 		var formObj = $("form[name='readForm']");
 		$("#FILE_NO").attr("value", fileNo);
 		formObj.submit();
-	});
+	}); */
 	  
 		
   }); 
+   
+	function fn_fileDown(fileNo){
+		var formObj = $("form[name='readForm']");
+		$("#FILE_NO").attr("value", fileNo);
+		formObj.attr("action", "/board/fileDown");
+		formObj.submit();
+	}
   </script>
 </head>
 <body>
@@ -91,7 +98,7 @@
            <tr>
 			<td style="width: 110px; vertical-align: middle;">내용
 			<input type="hidden" name="signLectureNo" value="${list.lectureNo }">
-			
+			<input type="hidden" name="lectureNo" value="${list.lectureNo }">
 			</td>
            </tr>
        </table> 
@@ -100,7 +107,7 @@
 		<form id = "readForm" name = "readForm">
         <div class="form-group" style="border: 1px solid #dbdbdb;">
         <input type="hidden" id="FILE_NO" name="FILE_NO" value=""> 
-        <input type="hidden" name="lectureNo" value="${list.lectureNo }">
+
 			<c:forEach var="file" items="${file}">
 				<a href="#" onclick="fn_fileDown('${file.FILE_NO}'); return false;">${file.ORG_FILE_NAME}</a>(${file.FILE_SIZE})<br>
 			</c:forEach>

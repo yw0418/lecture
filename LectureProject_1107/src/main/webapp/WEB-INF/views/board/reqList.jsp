@@ -20,6 +20,8 @@
 	.find-btn1{
 		display :inline-block;
 	}
+	
+	li {list-style: none; float: left; padding: 6px;}
 	</style>
   <script type="text/javascript">
  
@@ -90,10 +92,6 @@
 			  });
 	});
   
-	function selChange() {
-		var sel = document.getElementById('cntPerPage').value;
-		location.href="reqList?nowPage=${paging.nowPage}&cntPerPage="+sel;
-	}
   </script>
 </head>
 <body>
@@ -105,7 +103,17 @@
     <div class="panel-heading">가입요청</div>
     <div class="panel-body">
 
-    <form name="frm" action="#">
+    <form name="frm" action="#" method="get" role="form">
+    
+   <div class="search">
+    <select name="searchType">
+      <option value="w"<c:out value="${cri.searchType eq 'w' ? 'selected' : ''}"/>>이름</option>
+      <option value="tc"<c:out value="${cri.searchType eq 'tc' ? 'selected' : ''}"/>>아이디</option>
+    </select>
+    <input type="text" name="keyword" id="keywordInput" value="${cri.keyword}"/>
+    <button id="searchBtn" type="button">검색</button>
+   </div>
+   <br>
        <table class="table table-bordered table-hover">
           <tr>     	
           	<td text align='center'><input type="checkbox" id="cbx_chkAll" /></td>
@@ -119,11 +127,19 @@
 		  <c:forEach var="list" items="${userlist}">
            <tr>
            	<td text align='center'>
-           		<input type="checkbox" name="chk" value="${list.USERNO }" />
+        <c:choose>
+            <c:when test="${list.APRVNM eq '대기' }"> 
+				<input type="checkbox" name="chk" value="${list.USERNO }" />
+            </c:when>
+            <c:otherwise>
+                <input type="checkbox" name="chk" value="${list.USERNO }" disabled/>
+            </c:otherwise>
+        </c:choose>
+           		
            	</td>
            	<td style="text-align: center;">${list.NAME}</td>
 			<td style="text-align: center;">${list.ID}</td>
-            <td style="text-align: center;">${list.SUBNM}</td>
+            <td style="text-align: center;">${list.AUTHNM}</td>
             <td style="text-align: center;">${list.PHONE}</td>
             <td style="text-align: center;">${list.MAIL}</td>
             <td style="text-align: center;">${list.APRVNM}</td>
@@ -132,22 +148,19 @@
        </table>
        
        	<div style="display: block; text-align: center;">		
-		<c:if test="${paging.startPage != 1 }">
-			<a href="reqList?nowPage=${paging.startPage - 1 }&cntPerPage=${paging.cntPerPage}">&lt;</a>
-		</c:if>
-		<c:forEach begin="${paging.startPage }" end="${paging.endPage }" var="p">
-			<c:choose>
-				<c:when test="${p == paging.nowPage }">
-					<b>${p }</b>
-				</c:when>
-				<c:when test="${p != paging.nowPage }">
-					<a href="reqList?nowPage=${p }&cntPerPage=${paging.cntPerPage}">${p }</a>
-				</c:when>
-			</c:choose>
-		</c:forEach>
-		<c:if test="${paging.endPage != paging.lastPage}">
-			<a href="reqList?nowPage=${paging.endPage+1 }&cntPerPage=${paging.cntPerPage}">&gt;</a>
-		</c:if>
+  <ul>
+    <c:if test="${pageMaker.prev}">
+    	<li><a href="reqList${pageMaker.makeSearch(pageMaker.startPage - 1)}">이전</a></li>
+    </c:if> 
+
+    <c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">
+    	<li><a href="reqList${pageMaker.makeSearch(idx)}">${idx}</a></li>
+    </c:forEach>
+
+    <c:if test="${pageMaker.next && pageMaker.endPage > 0}">
+    	<li><a href="reqList${pageMaker.makeSearch(pageMaker.endPage + 1)}">다음</a></li>
+    </c:if> 
+  </ul>
 	</div>
        <br>
       <div class="find-btn">

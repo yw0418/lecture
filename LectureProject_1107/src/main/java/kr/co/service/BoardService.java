@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import kr.co.vo.BoardVO;
 import kr.co.vo.LectureVO;
 import kr.co.vo.PagingVO;
+import kr.co.vo.SearchCriteria;
 import kr.co.vo.SignVO;
 
 public interface BoardService {
@@ -38,10 +39,10 @@ public interface BoardService {
 	public int isSign(HashMap<String, Object> signMap) throws Exception;
 	
 	// 게시물 총 갯수
-	public int lectureCount() throws Exception;
+	public int lectureCount(SearchCriteria cri) throws Exception;
 
 	// 페이징 처리 게시글 조회
-	public List<LectureVO> selectLecture(PagingVO vo) throws Exception;
+	public List<LectureVO> selectLecture(SearchCriteria cri) throws Exception;
 	
 	// (교사)강의등록
 	public void addLecture(LectureVO vo, MultipartHttpServletRequest mpRequest) throws Exception;

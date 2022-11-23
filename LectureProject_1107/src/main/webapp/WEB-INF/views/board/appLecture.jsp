@@ -17,6 +17,8 @@
 	.find-btn1{
 		display :inline-block;
 	}
+
+	li {list-style: none; float: left; padding: 6px;}
 	</style>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
@@ -70,6 +72,12 @@
 		var sel = document.getElementById('cntPerPage').value;
 		location.href="boardList?nowPage=${paging.nowPage}&cntPerPage="+sel;
 	}
+	
+    $(function(){
+        $('#searchBtn').click(function() {
+          self.location = "list" + '${pageMaker.makeQuery(1)}' + "&searchType=" + $("select option:selected").val() + "&keyword=" + encodeURIComponent($('#keywordInput').val());
+        });
+      });   
 
   </script>
 </head>
@@ -82,7 +90,20 @@
     <div class="panel-heading">강의목록</div>
     <div class="panel-body">
 
-    <form name="frm" action="#">
+    <form name="frm" action="#" role="form" method="get">
+    <div class="search">
+    <select name="searchType">
+      <option value="t"<c:out value="${cri.searchType eq 't' ? 'selected' : ''}"/>>제목</option>
+      <option value="c"<c:out value="${cri.searchType eq 'c' ? 'selected' : ''}"/>>내용</option>
+      <option value="w"<c:out value="${cri.searchType eq 'w' ? 'selected' : ''}"/>>교사명</option>
+      <option value="tc"<c:out value="${cri.searchType eq 'tc' ? 'selected' : ''}"/>>제목+내용</option>
+    </select>
+
+    <input type="text" name="keyword" id="keywordInput" value="${scri.keyword}"/>
+
+    <button id="searchBtn" type="button">검색</button>
+    </div>
+    <br>
        <table class="table table-bordered table-hover">
           <tr>     	
           	<td text align='center'><input type="checkbox" id="cbx_chkAll" /></td>
@@ -114,24 +135,21 @@
       </form>
     </div>
     <!-- <div class="panel-footer"></div> -->
-	<div style="display: block; text-align: center;">		
-		<c:if test="${paging.startPage != 1 }">
-			<a href="appLecture?nowPage=${paging.startPage - 1 }&cntPerPage=${paging.cntPerPage}">&lt;</a>
-		</c:if>
-		<c:forEach begin="${paging.startPage }" end="${paging.endPage }" var="p">
-			<c:choose>
-				<c:when test="${p == paging.nowPage }">
-					<b>${p }</b>
-				</c:when>
-				<c:when test="${p != paging.nowPage }">
-					<a href="appLecture?nowPage=${p }&cntPerPage=${paging.cntPerPage}">${p }</a>
-				</c:when>
-			</c:choose>
-		</c:forEach>
-		<c:if test="${paging.endPage != paging.lastPage}">
-			<a href="appLecture?nowPage=${paging.endPage+1 }&cntPerPage=${paging.cntPerPage}">&gt;</a>
-		</c:if>
-	</div>
+<div>
+  <ul>
+    <c:if test="${pageMaker.prev}">
+    	<li><a href="appLecture${pageMaker.makeSearch(pageMaker.startPage - 1)}">이전</a></li>
+    </c:if> 
+
+    <c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">
+    	<li><a href="appLecture${pageMaker.makeSearch(idx)}">${idx}</a></li>
+    </c:forEach>
+
+    <c:if test="${pageMaker.next && pageMaker.endPage > 0}">
+    	<li><a href="appLecture${pageMaker.makeSearch(pageMaker.endPage + 1)}">다음</a></li>
+    </c:if> 
+  </ul>
+</div>
 
   </div>
 </div>
